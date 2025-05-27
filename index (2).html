@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoBonk </title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.75.0/lib/index.iife.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@project-serum/anchor@0.25.0/browser/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@solana/wallet-adapter-base@0.9.16/dist/index.iife.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@solana/wallet-adapter-wallets@0.18.2/dist/index.iife.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@solana/wallet-adapter-react@0.15.8/dist/index.iife.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@solana/wallet-adapter-react-ui@0.9.19/dist/index.iife.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FFD700',   // 金色
+                primary: '#FFD700',       // 金黄色（主色调）
+                secondary: '#FFB900',      // 琥珀黄（辅助色）
+                accent: '#FFA500',         // 橙黄色（强调色）
+                dark: '#0F172A',           // 深蓝色（保持不变）
+                light: '#F8FAFC',          // 亮白色（保持不变）
+                neutral: '#1E293B',        // 深灰色（保持不变）
+                'neutral-light': '#334155', // 中灰色（保持不变）
+                'neutral-dark': '#020617', // 近黑色（保持不变）
+                gold: '#FFD700',           // 新增：金色
+                amber: '#FFB900',          // 新增：琥珀黄
+                'yellow-accent': '#FFA500' // 新增：橙黄色
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'bounce-slow': 'bounce 4s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .text-shadow-lg {
+                text-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            }
+            .bg-gradient-radial {
+                background-image: radial-gradient(circle, var(--tw-gradient-stops));
+            }
+            .clip-path-slant {
+                clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+            }
+            .scrollbar-hide::-webkit-scrollbar {
+                display: none;
+            }
+            .scrollbar-hide {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            .glow {
+                filter: drop-shadow(0 0 8px rgba(0, 255, 163, 0.6));
+            }
+            .glow-secondary {
+                filter: drop-shadow(0 0 8px rgba(255, 0, 166, 0.6));
+            }
+            #connect-wallet-btn.connected {
+                background-color: #5CDB5C;
+                color: #0F172A;
+            }
+            #connect-wallet-btn.connected:hover {
+                background-color: rgba(92, 219, 92, 0.8);
+            }
+        }
+    </style>
+</head>
+<body class="font-inter bg-dark text-light min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" id="navbar">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center bg-dark/80 backdrop-blur-md rounded-b-xl">
+            <div class="flex items-center space-x-2">
+                <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center animate-pulse-slow">
+                    <i class="fa fa-rocket text-dark text-xl"></i>
+                </div>
+                <h1 class="text-xl md:text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">SoBonk</h1>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#home" class="text-light/80 hover:text-primary transition-colors duration-300">首页</a>
+                <a href="#meme-factory" class="text-light/80 hover:text-primary transition-colors duration-300">Meme工厂</a>
+                <a href="#leaderboard" class="text-light/80 hover:text-primary transition-colors duration-300">热梗排行</a>
+                <a href="#staking" class="text-light/80 hover:text-primary transition-colors duration-300">质押挖矿</a>
+                <a href="#governance" class="text-light/80 hover:text-primary transition-colors duration-300">社区治理</a>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <button id="connect-wallet-btn" class="bg-accent hover:bg-accent/80 text-white px-5 py-2 rounded-full font-medium transition-all duration-300 transform hover:scale-105 flex items-center space-x-2">
+                    <i class="fa fa-link"></i>
+                    <span>连接钱包</span>
+                </button>
+                <button class="md:hidden text-light text-xl" id="mobile-menu-btn">
+                    <i class="fa fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="fixed inset-0 bg-dark/95 z-50 flex flex-col items-center justify-center space-y-8 text-xl transform translate-x-full transition-transform duration-300 md:hidden">
+            <button id="close-menu-btn" class="absolute top-6 right-6 text-light text-2xl">
+                <i class="fa fa-times"></i>
+            </button>
+            <a href="#home" class="text-light/80 hover:text-primary transition-colors duration-300">首页</a>
+            <a href="#meme-factory" class="text-light/80 hover:text-primary transition-colors duration-300">Meme工厂</a>
+            <a href="#leaderboard" class="text-light/80 hover:text-primary transition-colors duration-300">热梗排行</a>
+            <a href="#staking" class="text-light/80 hover:text-primary transition-colors duration-300">质押挖矿</a>
+            <a href="#governance" class="text-light/80 hover:text-primary transition-colors duration-300">社区治理</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen pt-24 pb-16 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-radial from-neutral-dark to-dark z-0"></div>
+        <div class="absolute inset-0 bg-[url('https://picsum.photos/id/1/1920/1080')] bg-cover bg-center opacity-10 z-0"></div>
+        
+        <!-- Animated elements -->
+        <div class="absolute top-20 left-10 w-20 h-20 bg-primary/20 rounded-full blur-3xl animate-pulse-slow"></div>
+        <div class="absolute bottom-20 right-10 w-32 h-32 bg-secondary/20 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 1s;"></div>
+        <div class="absolute top-1/3 right-1/4 w-16 h-16 bg-accent/20 rounded-full blur-2xl animate-float" style="animation-delay: 2s;"></div>
+        
+        <div class="container mx-auto px-4 pt-16 relative z-10">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-12">
+                <div class="md:w-1/2 space-y-6">
+                    <h1 class="text-[clamp(2.5rem,5vw,4rem)] font-bold leading-tight text-shadow-lg">
+                        <span class="block">质押表情包</span>
+                        <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">炒热链上梗</span>
+                    </h1>
+                    <p class="text-xl text-light/80 max-w-lg">在Solana上玩梗也能赚SOL！上传魔性表情包，质押挖MEME，跟着社区炒热下一个链上顶流梗！</p>
+                    
+                    <div class="flex flex-wrap gap-4 pt-4">
+                        <button class="bg-primary hover:bg-primary/80 text-dark px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 flex items-center space-x-2">
+                            <i class="fa fa-gamepad"></i>
+                            <span>开始游戏</span>
+                        </button>
+                        <button class="bg-transparent border-2 border-light/30 hover:border-primary text-light hover:text-primary px-8 py-3 rounded-full font-semibold transition-all duration-300 flex items-center space-x-2">
+                            <i class="fa fa-book"></i>
+                            <span>查看教程</span>
+                        </button>
+                    </div>
+                    
+                    <div class="flex items-center space-x-4 pt-6">
+                        <div class="flex -space-x-2">
+                            <img src="https://picsum.photos/id/237/100/100" alt="User" class="w-10 h-10 rounded-full border-2 border-dark">
+                            <img src="https://picsum.photos/id/238/100/100" alt="User" class="w-10 h-10 rounded-full border-2 border-dark">
+                            <img src="https://picsum.photos/id/239/100/100" alt="User" class="w-10 h-10 rounded-full border-2 border-dark">
+                            <div class="w-10 h-10 rounded-full bg-neutral flex items-center justify-center text-xs border-2 border-dark">
+                                +2k
+                            </div>
+                        </div>
+                        <p class="text-sm text-light/70">已有 2,341 名玩家参与</p>
+                    </div>
+                </div>
+                
+                <div class="md:w-1/2 relative">
+                    <div class="relative w-full max-w-md mx-auto">
+                        <div class="absolute inset-0 bg-gradient-to-br from-primary/30 to-secondary/30 rounded-2xl blur-2xl animate-pulse-slow"></div>
+                        <div class="relative bg-neutral rounded-2xl p-1 border border-light/10 overflow-hidden">
+                            <div class="bg-neutral-light rounded-xl p-6">
+                                <div class="flex justify-between items-center mb-6">
+                                    <h3 class="font-bold text-lg">当前热梗</h3>
+                                    <span class="text-xs bg-accent/20 text-accent px-3 py-1 rounded-full">实时更新</span>
+                                </div>
+                                
+                                <div class="space-y-4">
+                                    <div class="bg-neutral rounded-lg p-4 flex items-center space-x-4">
+                                        <div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                                            <img src="imgs/1.jpg" alt="Meme" class="w-full h-full object-cover">
+                                        </div>
+                                        <div class="flex-grow">
+                                            <h4 class="font-semibold">Retard Finder</h4>
+                                            <div class="flex items-center text-xs text-light/60">
+                                                <span class="mr-2">创作者: @IfindRetards</span>
+                                                <span class="flex items-center">
+                                                    <i class="fa fa-heart text-secondary mr-1"></i> 2.4k
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="bg-primary/20 text-primary px-3 py-1 rounded-lg text-sm font-medium">
+                                            +12%
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-neutral rounded-lg p-4 flex items-center space-x-4">
+                                        <div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                                            <img src="imgs/2.jpg" alt="Meme" class="w-full h-full object-cover">
+                                        </div>
+                                        <div class="flex-grow">
+                                            <h4 class="font-semibold">pepe</h4>
+                                            <div class="flex items-center text-xs text-light/60">
+                                                <span class="mr-2">创作者: @pepecoineth</span>
+                                                <span class="flex items-center">
+                                                    <i class="fa fa-heart text-secondary mr-1"></i> 1.8k
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="bg-primary/20 text-primary px-3 py-1 rounded-lg text-sm font-medium">
+                                            +8%
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-neutral rounded-lg p-4 flex items-center space-x-4">
+                                        <div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                                            <img src="imgs/3.jpg" alt="Meme" class="w-full h-full object-cover">
+                                        </div>
+                                        <div class="flex-grow">
+                                            <h4 class="font-semibold">POPCAT</h4>
+                                            <div class="flex items-center text-xs text-light/60">
+                                                <span class="mr-2">创作者: @POPCATSOLANA</span>
+                                                <span class="flex items-center">
+                                                    <i class="fa fa-heart text-secondary mr-1"></i> 1.5k
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="bg-secondary/20 text-secondary px-3 py-1 rounded-lg text-sm font-medium">
+                                            -3%
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <button class="w-full mt-6 bg-accent hover:bg-accent/80 text-white py-3 rounded-lg font-medium transition-colors duration-300">
+                                    查看全部热梗
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20">
+                <div class="bg-neutral/50 backdrop-blur-sm rounded-xl p-6 border border-light/10">
+                    <h3 class="text-3xl font-bold text-primary mb-1">12.5K+</h3>
+                    <p class="text-light/70 text-sm">生成的Meme NFT</p>
+                </div>
+                <div class="bg-neutral/50 backdrop-blur-sm rounded-xl p-6 border border-light/10">
+                    <h3 class="text-3xl font-bold text-secondary mb-1">4.2K+</h3>
+                    <p class="text-light/70 text-sm">活跃创作者</p>
+                </div>
+                <div class="bg-neutral/50 backdrop-blur-sm rounded-xl p-6 border border-light/10">
+                    <h3 class="text-3xl font-bold text-accent mb-1">89.7K</h3>
+                    <p class="text-light/70 text-sm">SoBonk流通量</p>
+                </div>
+                <div class="bg-neutral/50 backdrop-blur-sm rounded-xl p-6 border border-light/10">
+                    <h3 class="text-3xl font-bold text-primary mb-1">2.3K</h3>
+                    <p class="text-light/70 text-sm">质押收益池</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Meme Factory Section -->
+    <section id="meme-factory" class="py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-neutral to-dark z-0"></div>
+        <div class="absolute top-0 left-0 w-full h-20 bg-gradient-to-b from-dark to-transparent z-10"></div>
+        
+        <div class="container mx-auto px-4 relative z-20">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(2rem,4vw,3rem)] font-bold mb-4">Meme工厂</h2>
+                <p class="text-light/70 max-w-2xl mx-auto text-lg">上传图片，添加文字，生成属于你的链上meme NFT，还能质押它赚取收益！</p>
+            </div>
+            
+            <div class="flex flex-col md:flex-row gap-8 items-center">
+                <div class="md:w-1/2 space-y-6">
+                    <div class="bg-neutral rounded-xl p-6 border border-light/10">
+                        <h3 class="text-xl font-bold mb-4">创建你的Meme NFT</h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-light/80 mb-2 text-sm">选择图片</label>
+                                <div class="border-2 border-dashed border-light/20 rounded-lg p-6 text-center cursor-pointer hover:border-primary transition-colors duration-300">
+                                    <i class="fa fa-cloud-upload text-4xl text-light/40 mb-2"></i>
+                                    <p class="text-light/60">点击上传图片或拖放至此处</p>
+                                    <p class="text-xs text-light/40 mt-1">支持 JPG, PNG, GIF 格式，最大 10MB</p>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-light/80 mb-2 text-sm">添加文字</label>
+                                <input type="text" placeholder="顶部文字" class="w-full bg-neutral-light border border-light/10 rounded-lg px-4 py-3 text-light focus:outline-none focus:border-primary transition-colors duration-300">
+                                <input type="text" placeholder="底部文字" class="w-full bg-neutral-light border border-light/10 rounded-lg px-4 py-3 text-light focus:outline-none focus:border-primary transition-colors duration-300 mt-3">
+                            </div>
+                            
+                          
+                            
+                            <button class="w-full bg-primary hover:bg-primary/80 text-dark py-3 rounded-lg font-semibold transition-colors duration-300 flex items-center justify-center space-x-2" id="generate-meme-btn">
+                                <i class="fa fa-magic"></i>
+                                <span>生成Meme NFT</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-neutral rounded-xl p-6 border border-light/10">
+                        <h3 class="text-xl font-bold mb-4">铸造设置</h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-light/80 mb-2 text-sm">NFT名称</label>
+                                <input type="text" placeholder="我的链上Meme" class="w-full bg-neutral-light border border-light/10 rounded-lg px-4 py-3 text-light focus:outline-none focus:border-primary transition-colors duration-300">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-light/80 mb-2 text-sm">版税设置（%）</label>
+                                <div class="flex items-center space-x-4">
+                                    <input type="range" min="0" max="10" step="0.5" value="5" class="w-full accent-primary">
+                                    <span class="text-light/80 min-w-[30px]">5%</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center space-x-2">
+                                <input type="checkbox" id="sell-on-marketplace" class="accent-primary">
+                                <label for="sell-on-marketplace" class="text-light/80 text-sm">同时在市场上列出出售</label>
+                            </div>
+                            
+                            <div class="flex items-center space-x-2">
+                                <input type="checkbox" id="enable-staking" class="accent-primary">
+                                <label for="enable-staking" class="text-light/80 text-sm">允许他人质押此NFT获取收益</label>
+                            </div>
+                            
+                            <button class="w-full bg-accent hover:bg-accent/80 text-white py-3 rounded-lg font-semibold transition-colors duration-300 flex items-center justify-center space-x-2" id="save-settings-btn">
+                                <i class="fa fa-save"></i>
+                                <span>保存设置</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="md:w-1/2">
+                    <div class="bg-neutral rounded-xl p-6 border border-light/10">
+                        <h3 class="text-xl font-bold mb-4">预览</h3>
+                        
+                        <div class="relative rounded-lg overflow-hidden mb-4">
+                            <img src="https://picsum.photos/id/27/600/400" alt="Meme Preview" class="w-full h-auto" id="meme-preview-img">
+                            <div class="absolute top-4 left-0 right-0 text-center">
+                                <h4 class="text-2xl font-bold text-white text-shadow-lg" id="top-text-preview">Solana上的Meme</h4>
+                            </div>
+                            <div class="absolute bottom-4 left-0 right-0 text-center">
+                                <h4 class="text-2xl font-bold text-white text-shadow-lg" id="bottom-text-preview">质押即挖矿</h4>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-light/70">铸造费用</span>
+                                <span class="font-semibold">0.02 SOL</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-light/70">预估Gas费</span>
+                                <span class="font-semibold">0.001 SOL</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-light/70">总费用</span>
+                                <span class="font-semibold text-primary">0.021 SOL</span>
+                            </div>
+                            
+                            <button class="w-full bg-secondary hover:bg-secondary/80 text-white py-3 rounded-lg font-semibold transition-colors duration-300 flex items-center justify-center space-x-2" id="mint-nft-btn">
+                                <i class="fa fa-send"></i>
+                                <span>铸造并上传到Solana</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 bg-neutral rounded-xl p-6 border border-light/10">
+                        <h3 class="text-xl font-bold mb-4">铸造提示</h3>
+                        <ul class="space-y-2 text-light/70">
+                            <li class="flex items-start">
+                                <i class="fa fa-info-circle text-primary mt-1 mr-2"></i>
+                                <span>铸造成功后，你的meme将永久保存在Solana区块链上</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-info-circle text-primary mt-1 mr-2"></i>
+                                <span>每次你的NFT被交易，你都将获得版税收益</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-info-circle text-primary mt-1 mr-2"></i>
+                                <span>热门meme可能会获得额外的SOL奖励和社区曝光</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-info-circle text-primary mt-1 mr-2"></i>
+                                <span>确保你的内容符合社区准则，违规内容可能会被下架</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Leaderboard Section -->
+    <section id="leaderboard" class="py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-dark to-neutral-dark z-0"></div>
+        
+        <div class="container mx-auto px-4 relative z-20">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(2rem,4vw,3rem)] font-bold mb-4">热梗排行榜</h2>
+                <p class="text-light/70 max-w-2xl mx-auto text-lg">每周评选最具传播力的链上meme，赢取SOL奖励和社区荣誉！</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Top 3 Memes -->
+                <div class="md:col-span-1 space-y-6">
+                    <div class="bg-neutral rounded-xl p-6 border border-light/10 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 bg-secondary text-dark font-bold px-4 py-1 rounded-bl-lg text-sm">
+                            #1
+                        </div>
+                        <div class="relative z-10">
+                            <div class="rounded-lg overflow-hidden mb-4">
+                                <img src="imgs/1.jpg" alt="Top Meme" class="w-full h-auto">
+                            </div>
+                            <h3 class="font-bold text-xl mb-1">Retard Finder</h3>
+                            <p class="text-light/70 text-sm mb-3">创作者: @IfindRetards</p>
+                            
+                            <div class="grid grid-cols-2 gap-3 mb-4">
+                                <div class="bg-neutral-light rounded-lg p-3 text-center">
+                                    <div class="text-primary text-2xl font-bold">2.4K</div>
+                                    <div class="text-light/60 text-xs">收藏量</div>
+                                </div>
+                                <div class="bg-neutral-light rounded-lg p-3 text-center">
+                                    <div class="text-secondary text-2xl font-bold">1.8K</div>
+                                    <div class="text-light/60 text-xs">传播得分</div>
+                                </div>
+                                <div class="bg-neutral-light rounded-lg p-3 text-center">
+                                    <div class="text-accent text-2xl font-bold">124 SOL</div>
+                                    <div class="text-light/60 text-xs">交易总额</div>
+                                </div>
+                                <div class="bg-neutral-light rounded-lg p-3 text-center">
+                                    <div class="text-primary text-2xl font-bold">12.5%</div>
+                                    <div class="text-light/60 text-xs">周增长率</div>
+                                </div>
+                            </div>
+                            
+                            <button class="w-full bg-primary hover:bg-primary/80 text-dark py-2 rounded-lg font-medium transition-colors duration-300">
+                                查看详情
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-neutral rounded-xl p-6 border border-light/10 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 bg-secondary/80 text-dark font-bold px-4 py-1 rounded-bl-lg text-sm">
+                            #2
+                        </div>
+                        <div class="relative z-10">
+                            <div class="rounded-lg overflow-hidden mb-4">
+                                <img src="imgs/2.jpg" alt="Top Meme" class="w-full h-auto">
+                            </div>
+                            <h3 class="font-bold text-xl mb-1">pepe</h3>
+                            <p class="text-light/70 text-sm mb-3">创作者: @pepecoineth</p>
+                            
+                            <div class="grid grid-cols-2 gap-3 mb-4">
+                                <div class="bg-neutral-light rounded-lg p-3 text-center">
+                                    <div class="text-primary text-2xl font-bold">1.8K</div>
+                                    <div class="text-light/60 text-xs">收藏量</div>
+                                </div>
+                                <div class="bg-neutral-light rounded-lg p-3 text-center">
+                                    <div class="text-secondary text-2xl font-bold">1.5K</div>
+                                    <div class="text-light/60 text-xs">传播得分</div>
+                                </div>
+                                <div class="bg-neutral-light rounded-lg p-3 text-center">
+                                    <div class="text-accent text-2xl font-bold">98 SOL</div>
+                                    <div class="text-light/60 text-xs">交易总额</div>
+                                </div>
+                                <div class="bg-neutral-light rounded-lg p-3 text-center">
+                                    <div class="text-primary text-2xl font-bold">8.3%</div>
+                                    <div class="text-light/60 text-xs">周增长率</div>
+                                </div>
+                            </div>
+                            
+                            <button class="w-full bg-accent hover:bg-accent/80 text-white py-2 rounded-lg font-medium transition-colors duration-300">
+                                查看详情
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-neutral rounded-xl p-6 border border-light/10 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 bg-secondary/60 text-dark font-bold px-4 py-1 rounded-bl-lg text-sm">
+                            #3
+                        </div>
+                        <div class="relative z-10">
+                            <div class="rounded-lg overflow-hidden mb-4">
+                                <img src="imgs/3.jpg" alt="Top Meme" class="w-full h-auto">
+                            </div>
+                            <h3 class="font-bold text-xl mb-1">POPCAT</h3>
+                            <p class="text-light/70 text-sm mb-3">创作者: @POPCATSOLANA</p>
+                            
+                            <div class="grid grid-cols-2 gap-3 mb-4">
+                                <div class="bg-neutral-light rounded-lg p-3 text-center">
+                                    <div class="text-primary text-2xl font-bold">1.5K</div>
+                                    <div class="text-light/60 text-xs">收藏量</div>
+                                </div>
+                                <div class="bg-neutral-light rounded-lg p-3 text-center">
+                                    <div class="text-secondary text-2xl font-bold">1.2K</div>
+                                    <div class="text-light/60 text-xs">传播得分</div>
+                                </div>
+                                <div class="bg-neutral-light rounded-lg p-3 text-center">
+                                    <div class="text-accent text-2xl font-bold">76 SOL</div>
+                                    <div class="text-light/60 text-xs">交易总额</div>
+                                </div>
+                                <div class="bg-neutral-light rounded-lg p-3 text-center">
+                                    <div class="text-primary text-2xl font-bold">5.7%</div>
+                                    <div class="text-light/60 text-xs">周增长率</div>
+                                </div>
+                            </div>
+                            
+                            <button class="w-full bg-light/10 hover:bg-light/20 text-white py-2 rounded-lg font-medium transition-colors duration-300">
+                                查看详情
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Leaderboard Table -->
+                <div class="md:col-span-2 bg-neutral rounded-xl p-6 border border-light/10">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold">热梗排行</h3>
+                        <div class="flex space-x-2">
+                            <button class="bg-primary/20 text-primary px-4 py-1 rounded-lg text-sm font-medium">本周</button>
+                            <button class="bg-neutral-light hover:bg-neutral-light/80 text-light/70 px-4 py-1 rounded-lg text-sm font-medium transition-colors duration-300">本月</button>
+                            <button class="bg-neutral-light hover:bg-neutral-light/80 text-light/70 px-4 py-1 rounded-lg text-sm font-medium transition-colors duration-300">全部</button>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto scrollbar-hide">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="text-left border-b border-light/10">
+                                    <th class="pb-3 text-light/60 font-medium">#</th>
+                                    <th class="pb-3 text-light/60 font-medium">Meme</th>
+                                    <th class="pb-3 text-light/60 font-medium">创作者</th>
+                                    <th class="pb-3 text-light/60 font-medium">收藏量</th>
+                                    <th class="pb-3 text-light/60 font-medium">传播得分</th>
+                                    <th class="pb-3 text-light/60 font-medium">趋势</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-light/5 hover:bg-neutral-light/30 transition-colors duration-200">
+                                    <td class="py-4 text-light/80">1</td>
+                                    <td class="py-4">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-12 h-12 rounded-lg overflow-hidden">
+                                                <img src="imgs/1.jpg" alt="Meme" class="w-full h-full object-cover">
+                                            </div>
+                                            <div>
+                                                <h4 class="font-medium">Retard Finder</h4>
+                                                <div class="text-xs text-light/50">NFT #4567</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 text-light/80">@IfindRetards</td>
+                                    <td class="py-4 text-light/80">1,245</td>
+                                    <td class="py-4 text-light/80">1,050</td>
+                                    <td class="py-4">
+                                        <span class="text-primary flex items-center">
+                                            <i class="fa fa-arrow-up mr-1"></i> 4.2%
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-light/5 hover:bg-neutral-light/30 transition-colors duration-200">
+                                    <td class="py-4 text-light/80">2</td>
+                                    <td class="py-4">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-12 h-12 rounded-lg overflow-hidden">
+                                                <img src="imgs/2.jpg" alt="Meme" class="w-full h-full object-cover">
+                                            </div>
+                                            <div>
+                                                <h4 class="font-medium">pepe</h4>
+                                                <div class="text-xs text-light/50">NFT #2345</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 text-light/80">@pepecoineth</td>
+                                    <td class="py-4 text-light/80">1,120</td>
+                                    <td class="py-4 text-light/80">980</td>
+                                    <td class="py-4">
+                                        <span class="text-primary flex items-center">
+                                            <i class="fa fa-arrow-up mr-1"></i> 3.8%
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-light/5 hover:bg-neutral-light/30 transition-colors duration-200">
+                                    <td class="py-4 text-light/80">3</td>
+                                    <td class="py-4">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-12 h-12 rounded-lg overflow-hidden">
+                                                <img src="imgs/3.jpg" alt="Meme" class="w-full h-full object-cover">
+                                            </div>
+                                            <div>
+                                                <h4 class="font-medium">POPCAT</h4>
+                                                <div class="text-xs text-light/50">NFT #7890</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 text-light/80">@POPCATSOLANA</td>
+                                    <td class="py-4 text-light/80">980</td>
+                                    <td class="py-4 text-light/80">850</td>
+                                    <td class="py-4">
+                                        <span class="text-primary flex items-center">
+                                            <i class="fa fa-arrow-up mr-1"></i> 2.5%
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-light/5 hover:bg-neutral-light/30 transition-colors duration-200">
+                                    <td class="py-4 text-light/80">4</td>
+                                    <td class="py-4">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-12 h-12 rounded-lg overflow-hidden">
+                                                <img src="4.jpg" alt="Meme" class="w-full h-full object-cover">
+                                            </div>
+                                            <div>
+                                                <h4 class="font-medium">titcoin</h4>
+                                                <div class="text-xs text-light/50">NFT #1234</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 text-light/80">@TheTitCoin</td>
+                                    <td class="py-4 text-light/80">870</td>
+                                    <td class="py-4 text-light/80">790</td>
+                                    <td class="py-4">
+                                        <span class="text-secondary flex items-center">
+                                            <i class="fa fa-arrow-down mr-1"></i> 1.2%
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-light/5 hover:bg-neutral-light/30 transition-colors duration-200">
+                                    <td class="py-4 text-light/80">5</td>
+                                    <td class="py-4">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-12 h-12 rounded-lg overflow-hidden">
+                                                <img src="5.jpg" alt="Meme" class="w-full h-full object-cover">
+                                            </div>
+                                            <div>
+                                                <h4 class="font-medium">Fartcoin</h4>
+                                                <div class="text-xs text-light/50">NFT #5678</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 text-light/80">@FartCoinOfSOL</td>
+                                    <td class="py-4 text-light/80">750</td>
+                                    <td class="py-4 text-light/80">720</td>
+                                    <td class="py-4">
+                                        <span class="text-primary flex items-center">
+                                            <i class="fa fa-arrow-up mr-1"></i> 1.8%
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="mt-6 flex justify-between items-center">
+                        <div class="text-light/60 text-sm">显示 1-8，共 100+ 个Meme</div>
+                        <div class="flex space-x-1">
+                            <button class="w-8 h-8 flex items-center justify-center rounded-lg bg-neutral-light text-light/70 hover:bg-primary hover:text-dark transition-colors duration-300">
+                                <i class="fa fa-chevron-left"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-dark">1</button>
+                            <button class="w-8 h-8 flex items-center justify-center rounded-lg bg-neutral-light text-light/70 hover:bg-primary hover:text-dark transition-colors duration-300">2</button>
+                            <button class="w-8 h-8 flex items-center justify-center rounded-lg bg-neutral-light text-light/70 hover:bg-primary hover:text-dark transition-colors duration-300">3</button>
+                            <button class="w-8 h-8 flex items-center justify-center rounded-lg bg-neutral-light text-light/70 hover:bg-primary hover:text-dark transition-colors duration-300">
+                                <i class="fa fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Trend Chart -->
+            <div class="mt-12 bg-neutral rounded-xl p-6 border border-light/10">
+                <h3 class="text-xl font-bold mb-6">Meme热度趋势</h3>
+                <div class="h-80">
+                    <canvas id="trendChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Staking Section -->
+    <section id="staking" class="py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-neutral-dark to-dark z-0"></div>
+        
+        <div class="container mx-auto px-4 relative z-20">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(2rem,4vw,3rem)] font-bold mb-4">质押挖矿</h2>
+                <p class="text-light/70 max-w-2xl mx-auto text-lg">质押你的meme NFT或SoBonk代币，参与生态建设并获取收益！</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- NFT Staking -->
+                <div class="bg-neutral rounded-xl p-6 border border-light/10">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold">NFT质押</h3>
+                        <span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-sm">APY: 87.5%</span>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-neutral-light rounded-lg p-4 flex items-center space-x-4">
+                            <div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                                <img src="imgs/1.jpg" alt="NFT" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="font-medium">Retard Finder</h4>
+                                <div class="text-xs text-light/50">NFT #1234 · 稀有度: 史诗</div>
+                            </div>
+                            <button class="bg-primary hover:bg-primary/80 text-dark px-4 py-1.5 rounded-lg text-sm font-medium transition-colors duration-300">
+                                质押
+                            </button>
+                        </div>
+                        
+                        <div class="bg-neutral-light rounded-lg p-4 flex items-center space-x-4">
+                            <div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                                <img src="imgs/2.jpg" alt="NFT" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="font-medium">pepe</h4>
+                                <div class="text-xs text-light/50">NFT #2345 · 稀有度: 传奇</div>
+                            </div>
+                            <button class="bg-primary hover:bg-primary/80 text-dark px-4 py-1.5 rounded-lg text-sm font-medium transition-colors duration-300">
+                                质押
+                            </button>
+                        </div>
+                        
+                        <div class="bg-neutral-light rounded-lg p-4 flex items-center space-x-4">
+                            <div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                                <img src="imgs/3.jpg" alt="NFT" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="font-medium">POPCAT</h4>
+                                <div class="text-xs text-light/50">NFT #3456 · 稀有度: 普通</div>
+                            </div>
+                            <button class="bg-primary hover:bg-primary/80 text-dark px-4 py-1.5 rounded-lg text-sm font-medium transition-colors duration-300">
+                                质押
+                            </button>
+                        </div>
+                        
+                        <button class="w-full bg-neutral-light hover:bg-neutral-light/80 text-light/80 py-3 rounded-lg font-medium transition-colors duration-300 flex items-center justify-center space-x-2">
+                            <i class="fa fa-plus"></i>
+                            <span>添加更多NFT</span>
+                        </button>
+                    </div>
+                    
+                    <div class="mt-6 bg-neutral-light/50 rounded-lg p-4 border border-light/10">
+                        <h4 class="font-medium mb-3">质押统计</h4>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-neutral rounded-lg p-3">
+                                <div class="text-light/60 text-xs mb-1">当前质押</div>
+                                <div class="font-semibold">3 个NFT</div>
+                            </div>
+                            <div class="bg-neutral rounded-lg p-3">
+                                <div class="text-light/60 text-xs mb-1">总价值</div>
+                                <div class="font-semibold">4.2 SOL</div>
+                            </div>
+                            <div class="bg-neutral rounded-lg p-3">
+                                <div class="text-light/60 text-xs mb-1">每日收益</div>
+                                <div class="font-semibold text-primary">0.12 SOL</div>
+                            </div>
+                            <div class="bg-neutral rounded-lg p-3">
+                                <div class="text-light/60 text-xs mb-1">累计收益</div>
+                                <div class="font-semibold text-primary">1.87 SOL</div>
+                            </div>
+                        </div>
+                        
+                        <button class="w-full mt-4 bg-primary hover:bg-primary/80 text-dark py-3 rounded-lg font-semibold transition-colors duration-300">
+                            收取收益
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Token Staking -->
+                <div class="bg-neutral rounded-xl p-6 border border-light/10">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold">代币质押</h3>
+                        <span class="bg-secondary/20 text-secondary px-3 py-1 rounded-full text-sm">APY: 45.2%</span>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-neutral-light rounded-lg p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h4 class="font-medium">SoBonk</h4>
+                                <div class="text-xs text-light/50">可用: 1,245.67 SoBonk</div>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-light/80 mb-2 text-sm">质押数量</label>
+                                    <div class="relative">
+                                        <input type="number" placeholder="0.0" class="w-full bg-neutral border border-light/10 rounded-lg px-4 py-3 text-light focus:outline-none focus:border-primary transition-colors duration-300">
+                                        <button class="absolute right-2 top-2 bg-primary/20 text-primary px-2 py-1 rounded text-xs">MAX</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex justify-between items-center text-sm">
+                                    <div>
+                                        <span class="text-light/60">质押池总价值:</span>
+                                        <span class="font-medium ml-1">89,750.23 SoBonk</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-light/60">你的份额:</span>
+                                        <span class="font-medium ml-1">1.4%</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div class="bg-neutral rounded-lg p-3">
+                                        <div class="text-light/60 text-xs mb-1">预计每日收益</div>
+                                        <div class="font-semibold text-primary">12.45 SoBonk</div>
+                                    </div>
+                                    <div class="bg-neutral rounded-lg p-3">
+                                        <div class="text-light/60 text-xs mb-1">锁定周期</div>
+                                        <div class="font-semibold">无</div>
+                                    </div>
+                                </div>
+                                
+                                <button class="w-full bg-primary hover:bg-primary/80 text-dark py-3 rounded-lg font-semibold transition-colors duration-300">
+                                    确认质押
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-neutral-light rounded-lg p-6">
+                            <h4 class="font-medium mb-4">你的质押</h4>
+                            
+                            <div class="space-y-3">
+                                <div class="bg-neutral rounded-lg p-3 flex justify-between items-center">
+                                    <div>
+                                        <div class="font-medium">SoBonk</div>
+                                        <div class="text-xs text-light/50">质押中: 850.00 SoBonk</div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="font-semibold text-primary">2.45 SoBonk</div>
+                                        <div class="text-xs text-light/50">可领取收益</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-neutral rounded-lg p-3 flex justify-between items-center">
+                                    <div>
+                                        <div class="font-medium">SOL</div>
+                                        <div class="text-xs text-light/50">质押中: 2.5 SOL</div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="font-semibold text-primary">0.03 SOL</div>
+                                        <div class="text-xs text-light/50">可领取收益</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button class="w-full mt-4 bg-accent hover:bg-accent/80 text-white py-3 rounded-lg font-semibold transition-colors duration-300">
+                                领取所有收益
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Governance Section -->
+    <section id="governance" class="py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-dark to-neutral z-0"></div>
+        
+        <div class="container mx-auto px-4 relative z-20">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(2rem,4vw,3rem)] font-bold mb-4">社区治理</h2>
+                <p class="text-light/70 max-w-2xl mx-auto text-lg">参与项目决策，投票决定未来方向，共建SoBonk生态！</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Active Proposals -->
+                <div class="md:col-span-2 bg-neutral rounded-xl p-6 border border-light/10">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold">活跃提案</h3>
+                        <button class="bg-primary hover:bg-primary/80 text-dark px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-300">
+                            提交新提案
+                        </button>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-neutral-light rounded-xl p-5 border border-light/10 hover:border-primary/30 transition-colors duration-300">
+                            <div class="flex justify-between items-start mb-4">
+                                <h4 class="font-bold">提案 #124: 增加每周创作者奖励池</h4>
+                                <span class="bg-accent/20 text-accent px-3 py-1 rounded-full text-xs">投票中</span>
+                            </div>
+                            
+                            <p class="text-light/80 mb-4">提议将每周创作者奖励池从500 SOL增加到1000 SOL，以激励更多优质内容创作。预计将吸引更多创作者加入平台，提高内容质量和社区活跃度。</p>
+                            
+                            <div class="flex justify-between items-center text-sm mb-4">
+                                <div>
+                                    <span class="text-light/60">提案人:</span>
+                                    <span class="font-medium ml-1">@top_creator</span>
+                                </div>
+                                <div>
+                                    <span class="text-light/60">投票截止:</span>
+                                    <span class="font-medium ml-1">3天 12小时</span>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-neutral rounded-lg p-4 mb-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-light/70 text-sm">投票结果</span>
+                                    <span class="font-medium">78% 赞成 · 22% 反对</span>
+                                </div>
+                                <div class="w-full bg-neutral-dark rounded-full h-2">
+                                    <div class="bg-primary h-2 rounded-full" style="width: 78%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex space-x-3">
+                                <button class="flex-1 bg-primary hover:bg-primary/80 text-dark py-2 rounded-lg font-medium transition-colors duration-300">
+                                    投赞成票
+                                </button>
+                                <button class="flex-1 bg-secondary hover:bg-secondary/80 text-white py-2 rounded-lg font-medium transition-colors duration-300">
+                                    投反对票
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-neutral-light rounded-xl p-5 border border-light/10 hover:border-primary/30 transition-colors duration-300">
+                            <div class="flex justify-between items-start mb-4">
+                                <h4 class="font-bold">提案 #123: 引入Meme质量评分系统</h4>
+                                <span class="bg-accent/20 text-accent px-3 py-1 rounded-full text-xs">投票中</span>
+                            </div>
+                            
+                            <p class="text-light/80 mb-4">提议引入自动质量评分系统，基于内容原创性、传播性和社区反馈对meme进行评分。评分将影响NFT的展示优先级和创作者奖励分配。</p>
+                            
+                            <div class="flex justify-between items-center text-sm mb-4">
+                                <div>
+                                    <span class="text-light/60">提案人:</span>
+                                    <span class="font-medium ml-1">@sol_dev</span>
+                                </div>
+                                <div>
+                                    <span class="text-light/60">投票截止:</span>
+                                    <span class="font-medium ml-1">1天 5小时</span>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-neutral rounded-lg p-4 mb-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-light/70 text-sm">投票结果</span>
+                                    <span class="font-medium">65% 赞成 · 35% 反对</span>
+                                </div>
+                                <div class="w-full bg-neutral-dark rounded-full h-2">
+                                    <div class="bg-primary h-2 rounded-full" style="width: 65%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex space-x-3">
+                                <button class="flex-1 bg-primary hover:bg-primary/80 text-dark py-2 rounded-lg font-medium transition-colors duration-300">
+                                    投赞成票
+                                </button>
+                                <button class="flex-1 bg-secondary hover:bg-secondary/80 text-white py-2 rounded-lg font-medium transition-colors duration-300">
+                                    投反对票
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 flex justify-between items-center">
+                        <div class="text-light/60 text-sm">显示 1-2，共 8 个活跃提案</div>
+                        <button class="text-primary hover:text-primary/80 font-medium text-sm flex items-center space-x-1">
+                            <span>查看全部</span>
+                            <i class="fa fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Governance Stats -->
+                <div class="bg-neutral rounded-xl p-6 border border-light/10">
+                    <h3 class="text-xl font-bold mb-6">治理统计</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-neutral-light rounded-lg p-4">
+                            <h4 class="font-medium mb-3">治理代币</h4>
+                            <div class="flex items-center space-x-3 mb-3">
+                                <div class="w-10 h-10 bg-accent rounded-full flex items-center justify-center">
+                                    <i class="fa fa-diamond text-white"></i>
+                                </div>
+                                <div>
+                                    <div class="font-medium">SoBonk</div>
+                                    <div class="text-xs text-light/50">治理代币</div>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-3">
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-light/60">总供应量</span>
+                                        <span class="font-medium">1,000,000 SoBonk</span>
+                                    </div>
+                                    <div class="w-full bg-neutral-dark rounded-full h-2">
+                                        <div class="bg-accent h-2 rounded-full" style="width: 78%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-light/60">流通量</span>
+                                        <span class="font-medium">780,000 SoBonk</span>
+                                    </div>
+                                    <div class="w-full bg-neutral-dark rounded-full h-2">
+                                        <div class="bg-accent h-2 rounded-full" style="width: 62%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-light/60">质押参与治理</span>
+                                        <span class="font-medium">345,678 SoBonk</span>
+                                    </div>
+                                    <div class="w-full bg-neutral-dark rounded-full h-2">
+                                        <div class="bg-accent h-2 rounded-full" style="width: 44%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-neutral-light rounded-lg p-4">
+                            <h4 class="font-medium mb-3">提案统计</h4>
+                            
+                            <div class="grid grid-cols-2 gap-3 mb-3">
+                                <div class="bg-neutral rounded-lg p-3 text-center">
+                                    <div class="text-accent text-2xl font-bold">124</div>
+                                    <div class="text-light/60 text-xs">总提案数</div>
+                                </div>
+                                <div class="bg-neutral rounded-lg p-3 text-center">
+                                    <div class="text-primary text-2xl font-bold">87</div>
+                                    <div class="text-light/60 text-xs">已通过</div>
+                                </div>
+                                <div class="bg-neutral rounded-lg p-3 text-center">
+                                    <div class="text-secondary text-2xl font-bold">37</div>
+                                    <div class="text-light/60 text-xs">已拒绝</div>
+                                </div>
+                                <div class="bg-neutral rounded-lg p-3 text-center">
+                                    <div class="text-accent text-2xl font-bold">8</div>
+                                    <div class="text-light/60 text-xs">进行中</div>
+                                </div>
+                            </div>
+                            
+                            <div class="h-40">
+                                <canvas id="proposalChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-neutral-light rounded-lg p-4">
+                            <h4 class="font-medium mb-3">你的参与度</h4>
+                            
+                            <div class="flex items-center justify-center mb-4">
+                                <div class="relative w-32 h-32">
+                                    <svg class="w-full h-full" viewBox="0 0 100 100">
+                                        <circle cx="50" cy="50" r="45" fill="none" stroke="#334155" stroke-width="8" />
+                                        <circle cx="50" cy="50" r="45" fill="none" stroke="#00FFA3" stroke-width="8" stroke-dasharray="282.74" stroke-dashoffset="70.69" transform="rotate(-90 50 50)" />
+                                    </svg>
+                                    <div class="absolute inset-0 flex items-center justify-center flex-col">
+                                        <div class="text-2xl font-bold">75%</div>
+                                        <div class="text-xs text-light/60">参与率</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-light/60">已投票提案</span>
+                                    <span class="font-medium">24</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-light/60">提交提案</span>
+                                    <span class="font-medium">3</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-light/60">活跃治理代币</span>
+                                    <span class="font-medium">1,245 SoBonk</span>
+                                </div>
+                            </div>
+                            
+                            <button class="w-full mt-4 bg-accent hover:bg-accent/80 text-white py-2 rounded-lg font-medium transition-colors duration-300">
+                                增加治理权重
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-neutral-dark py-12 relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://picsum.photos/id/1/1920/1080')] bg-cover bg-center opacity-5 z-0"></div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <div class="flex items-center space-x-2 mb-6">
+                        <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                            <i class="fa fa-rocket text-dark text-xl"></i>
+                        </div>
+                        <h2 class="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">SoBonk</h2>
+                    </div>
+                    
+                    <p class="text-light/70 mb-6">SoBonk是Solana上的首个meme NFT生态系统，结合DeFi与社区治理，让链上玩梗更有价值！</p>
+                    
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-neutral flex items-center justify-center text-light/70 hover:bg-primary hover:text-dark transition-colors duration-300">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-neutral flex items-center justify-center text-light/70 hover:bg-primary hover:text-dark transition-colors duration-300">
+                            <i class="fa fa-discord"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-neutral flex items-center justify-center text-light/70 hover:bg-primary hover:text-dark transition-colors duration-300">
+                            <i class="fa fa-telegram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-neutral flex items-center justify-center text-light/70 hover:bg-primary hover:text-dark transition-colors duration-300">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-6">功能</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#meme-factory" class="text-light/70 hover:text-primary transition-colors duration-300">Meme工厂</a></li>
+                        <li><a href="#leaderboard" class="text-light/70 hover:text-primary transition-colors duration-300">热梗排行</a></li>
+                        <li><a href="#staking" class="text-light/70 hover:text-primary transition-colors duration-300">质押挖矿</a></li>
+                        <li><a href="#governance" class="text-light/70 hover:text-primary transition-colors duration-300">社区治理</a></li>
+                        <li><a href="#" class="text-light/70 hover:text-primary transition-colors duration-300">NFT市场</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-6">资源</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-light/70 hover:text-primary transition-colors duration-300">文档</a></li>
+                        <li><a href="#" class="text-light/70 hover:text-primary transition-colors duration-300">教程</a></li>
+                        <li><a href="#" class="text-light/70 hover:text-primary transition-colors duration-300">API参考</a></li>
+                        <li><a href="#" class="text-light/70 hover:text-primary transition-colors duration-300">智能合约</a></li>
+                        <li><a href="#" class="text-light/70 hover:text-primary transition-colors duration-300">常见问题</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-6">联系我们</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-center space-x-3">
+                            <i class="fa fa-envelope text-primary"></i>
+                            <a href="mailto:info@SoBonk.com" class="text-light/70 hover:text-primary transition-colors duration-300">info@SoBonk.com</a>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i class="fa fa-map-marker text-primary"></i>
+                            <span class="text-light/70">Solana生态系统</span>
+                        </li>
+                    </ul>
+                    
+                    <div class="mt-6">
+                        <h4 class="text-base font-medium mb-3">订阅更新</h4>
+                        <div class="flex">
+                            <input type="email" placeholder="你的邮箱" class="flex-1 bg-neutral border border-light/10 rounded-l-lg px-4 py-2 text-light focus:outline-none focus:border-primary transition-colors duration-300">
+                            <button class="bg-primary hover:bg-primary/80 text-dark px-4 py-2 rounded-r-lg font-medium transition-colors duration-300">
+                                订阅
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-light/10 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-light/60 text-sm mb-4 md:mb-0">© 2025 SoBonk. 保留所有权利。</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-light/60 hover:text-primary text-sm transition-colors duration-300">隐私政策</a>
+                    <a href="#" class="text-light/60 hover:text-primary text-sm transition-colors duration-300">服务条款</a>
+                    <a href="#" class="text-light/60 hover:text-primary text-sm transition-colors duration-300">Cookie政策</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize charts
+        document.addEventListener('DOMContentLoaded', function() {
+            // Solana Wallet Connection
+            let walletAddress = null;
+            let connection = null;
+            let publicKey = null;
+
+            // Initialize Solana connection
+            async function initSolanaConnection() {
+                try {
+                    connection = new solanaWeb3.Connection(
+                        "https://api.mainnet-beta.solana.com",
+                        'confirmed'
+                    );
+                    console.log("Solana connection established");
+                } catch (error) {
+                    console.error("Failed to establish Solana connection:", error);
+                }
+            }
+
+            // Connect wallet function
+            async function connectWallet() {
+                if (!window.solana || !window.solana.isPhantom) {
+                    alert("Phantom钱包未安装! 请先安装Phantom钱包扩展程序。");
+                    window.open("https://phantom.app/", "_blank");
+                    return;
+                }
+
+                try {
+                    const resp = await window.solana.connect();
+                    publicKey = resp.publicKey;
+                    walletAddress = publicKey.toString();
+                    const shortAddress = walletAddress.slice(0, 4) + "..." + walletAddress.slice(-4);
+                    
+                    console.log("Connected to wallet:", walletAddress);
+                    
+                    // Update UI
+                    connectWalletBtn.innerHTML = `
+                        <i class="fa fa-check-circle"></i>
+                        <span>${shortAddress}</span>
+                    `;
+                    connectWalletBtn.classList.add('connected');
+                    
+                    // Dispatch event for other components that might need wallet info
+                    document.dispatchEvent(new CustomEvent('walletConnected', {
+                        detail: { address: walletAddress, publicKey: publicKey }
+                    }));
+                    
+                    return publicKey;
+                } catch (err) {
+                    console.error("Failed to connect wallet:", err);
+                    alert("连接钱包失败: " + err.message);
+                }
+            }
+
+            // Disconnect wallet function
+            async function disconnectWallet() {
+                if (window.solana) {
+                    await window.solana.disconnect();
+                    walletAddress = null;
+                    publicKey = null;
+                    
+                    // Update UI
+                    connectWalletBtn.innerHTML = `
+                        <i class="fa fa-link"></i>
+                        <span>连接钱包</span>
+                    `;
+                    connectWalletBtn.classList.remove('connected');
+                    
+                    console.log("Wallet disconnected");
+                }
+            }
+
+            // Toggle wallet connection
+            async function toggleWalletConnection() {
+                if (walletAddress) {
+                    await disconnectWallet();
+                } else {
+                    await connectWallet();
+                }
+            }
+
+            // Initialize Solana connection
+            initSolanaConnection();
+            
+            // Meme Factory - Image Upload and Preview
+            let uploadedImage = null;
+            const imageUploadArea = document.querySelector('.border-dashed');
+            const memePreview = document.querySelector('#meme-preview-img');
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*';
+            fileInput.style.display = 'none';
+            document.body.appendChild(fileInput);
+            
+            // Top and bottom text inputs
+            const topTextInput = document.querySelector('input[placeholder="顶部文字"]');
+            const bottomTextInput = document.querySelector('input[placeholder="底部文字"]');
+            const topTextPreview = document.querySelector('#top-text-preview');
+            const bottomTextPreview = document.querySelector('#bottom-text-preview');
+            
+            // Handle file input changes
+            fileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    if (file.size > 10 * 1024 * 1024) {
+                        alert('图片大小不能超过10MB');
+                        return;
+                    }
+                    
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        uploadedImage = event.target.result;
+                        memePreview.src = uploadedImage;
+                        
+                        // Update upload area to show success state
+                        imageUploadArea.innerHTML = `
+                            <i class="fa fa-check-circle text-4xl text-primary mb-2"></i>
+                            <p class="text-light/60">图片已上传</p>
+                            <p class="text-xs text-light/40 mt-1">点击更换图片</p>
+                        `;
+                        
+                        updateMemePreview();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // Handle text input changes
+            topTextInput.addEventListener('input', updateMemePreview);
+            bottomTextInput.addEventListener('input', updateMemePreview);
+            
+            // Update the meme preview with current image and text
+            function updateMemePreview() {
+                if (topTextPreview) {
+                    topTextPreview.textContent = topTextInput.value;
+                }
+                
+                if (bottomTextPreview) {
+                    bottomTextPreview.textContent = bottomTextInput.value;
+                }
+            }
+            
+            // Click handler for the upload area
+            imageUploadArea.addEventListener('click', function() {
+                fileInput.click();
+            });
+            
+            // Drag and drop functionality
+            imageUploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                imageUploadArea.classList.add('border-primary');
+            });
+            
+            imageUploadArea.addEventListener('dragleave', function() {
+                imageUploadArea.classList.remove('border-primary');
+            });
+            
+            imageUploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                imageUploadArea.classList.remove('border-primary');
+                
+                const file = e.dataTransfer.files[0];
+                if (file) {
+                    if (file.size > 10 * 1024 * 1024) {
+                        alert('图片大小不能超过10MB');
+                        return;
+                    }
+                    
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        uploadedImage = event.target.result;
+                        memePreview.src = uploadedImage;
+                        
+                        imageUploadArea.innerHTML = `
+                            <i class="fa fa-check-circle text-4xl text-primary mb-2"></i>
+                            <p class="text-light/60">图片已上传</p>
+                            <p class="text-xs text-light/40 mt-1">点击更换图片</p>
+                        `;
+                        
+                        updateMemePreview();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // Generate Meme NFT
+            const generateMemeBtn = document.getElementById('generate-meme-btn');
+            if (generateMemeBtn) {
+                generateMemeBtn.addEventListener('click', function() {
+                    if (!uploadedImage) {
+                        alert('请先上传图片');
+                        return;
+                    }
+                    
+                    // Show loading state
+                    this.innerHTML = `
+                        <i class="fa fa-spinner fa-spin"></i>
+                        <span>生成中...</span>
+                    `;
+                    
+                    // Simulate processing time
+                    setTimeout(() => {
+                        this.innerHTML = `
+                            <i class="fa fa-check"></i>
+                            <span>生成完成</span>
+                        `;
+                        
+                        alert('Meme NFT 生成成功！现在可以铸造到Solana区块链上。');
+                        
+                        setTimeout(() => {
+                            this.innerHTML = `
+                                <i class="fa fa-magic"></i>
+                                <span>生成Meme NFT</span>
+                            `;
+                        }, 2000);
+                    }, 1500);
+                });
+            }
+            
+            // Mint NFT functionality
+            const mintNFTBtn = document.getElementById('mint-nft-btn');
+            if (mintNFTBtn) {
+                mintNFTBtn.addEventListener('click', async function() {
+                    if (!walletAddress) {
+                        alert('请先连接钱包');
+                        connectWalletBtn.scrollIntoView({ behavior: 'smooth' });
+                        return;
+                    }
+                    
+                    if (!uploadedImage) {
+                        alert('请先上传图片并生成Meme');
+                        return;
+                    }
+                    
+                    // Show loading state
+                    this.innerHTML = `
+                        <i class="fa fa-spinner fa-spin"></i>
+                        <span>铸造中...</span>
+                    `;
+                    
+                    // Simulate minting process
+                    setTimeout(() => {
+                        const success = Math.random() > 0.2; // 80% success rate for demo
+                        
+                        if (success) {
+                            this.innerHTML = `
+                                <i class="fa fa-check"></i>
+                                <span>铸造成功</span>
+                            `;
+                            
+                            const randomTxId = Array(43).fill(0).map(() => 
+                                "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"[Math.floor(Math.random() * 62)]
+                            ).join('');
+                            
+                            alert(`Meme NFT 铸造成功！\n交易ID: ${randomTxId}\n\n你可以在Solana区块浏览器上查看此交易。`);
+                        } else {
+                            this.innerHTML = `
+                                <i class="fa fa-exclamation-triangle"></i>
+                                <span>铸造失败</span>
+                            `;
+                            
+                            alert('铸造失败，请检查钱包余额或稍后再试。');
+                        }
+                        
+                        setTimeout(() => {
+                            this.innerHTML = `
+                                <i class="fa fa-send"></i>
+                                <span>铸造并上传到Solana</span>
+                            `;
+                        }, 2000);
+                    }, 2500);
+                });
+            }
+            
+            // Connect wallet button
+            const connectWalletBtn = document.getElementById('connect-wallet-btn');
+            connectWalletBtn.addEventListener('click', toggleWalletConnection);
+
+            // Trend chart
+            const trendCtx = document.getElementById('trendChart').getContext('2d');
+            new Chart(trendCtx, {
+                type: 'line',
+                data: {
+                    labels: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+                    datasets: [
+                        {
+                            label: 'Retard Finder',
+                            data: [650, 780, 920, 1240, 1560, 1850, 2400],
+                            borderColor: '#00FFA3',
+                            backgroundColor: 'rgba(0, 255, 163, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'pepe',
+                            data: [420, 560, 780, 940, 1200, 1560, 1850],
+                            borderColor: '#FF00A6',
+                            backgroundColor: 'rgba(255, 0, 166, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'POPCAT',
+                            data: [580, 620, 750, 890, 1020, 1240, 1500],
+                            borderColor: '#7C3AED',
+                            backgroundColor: 'rgba(124, 58, 237, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: '#F8FAFC'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(248, 250, 252, 0.1)'
+                            },
+                            ticks: {
+                                color: '#F8FAFC'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(248, 250, 252, 0.1)'
+                            },
+                            ticks: {
+                                color: '#F8FAFC'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Proposal chart
+            const proposalCtx = document.getElementById('proposalChart').getContext('2d');
+            new Chart(proposalCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['已通过', '已拒绝', '进行中'],
+                    datasets: [{
+                        data: [87, 37, 8],
+                        backgroundColor: [
+                            '#00FFA3',
+                            '#FF00A6',
+                            '#7C3AED'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#F8FAFC',
+                                padding: 10
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Navbar scroll effect
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('bg-dark/95');
+                    navbar.classList.remove('bg-dark/80');
+                } else {
+                    navbar.classList.add('bg-dark/80');
+                    navbar.classList.remove('bg-dark/95');
+                }
+            });
+            
+            // Mobile menu toggle
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const closeMenuBtn = document.getElementById('close-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                mobileMenu.classList.remove('translate-x-full');
+            });
+            
+            closeMenuBtn.addEventListener('click', function() {
+                mobileMenu.classList.add('translate-x-full');
+            });
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                        
+                        // Close mobile menu if open
+                        if (!mobileMenu.classList.contains('translate-x-full')) {
+                            mobileMenu.classList.add('translate-x-full');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+    
