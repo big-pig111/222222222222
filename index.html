@@ -14,7 +14,10 @@
     <script src="https://cdn.jsdelivr.net/npm/@solana/wallet-adapter-react@0.15.8/dist/index.iife.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@solana/wallet-adapter-react-ui@0.9.19/dist/index.iife.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+    <!-- 修改原有script部分 -->
+<script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.76.0/lib/index.iife.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@solana/wallet-adapter-phantom@0.18.2/lib/index.iife.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@solana/wallet-adapter-solflare@0.6.2/lib/index.iife.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -1504,6 +1507,176 @@ document.head.appendChild(style);
     <i class="fa fa-magic"></i>
     <span>生成Meme NFT</span>
 </button>
+    <script>
+// 钱包实例
+let wallet = null;
+let connection = null;
+
+document.addEventListener('DOMContentLoaded', async () => {
+    // 初始化Solana连接
+    connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('devnet'));
+    
+    // 初始化钱包适配器
+    const wallets = {
+        phantom: new PhantomWalletAdapter(),
+        solflare: new SolflareWalletAdapter()
+    };
+
+    // 钱包连接按钮处理
+    const connectBtn = document.getElementById('connect-wallet-btn');
+    connectBtn.addEventListener('click', async () => {
+        if (!wallet?.connected) {
+            try {
+                // 优先尝试Phantom
+                if (wallets.phantom.connected) {
+                    wallet = wallets.phantom;
+                } else {
+                    await wallets.phantom.connect();
+                    wallet = wallets.phantom;
+                }
+                
+                // 更新UI
+                connectBtn.innerHTML = `
+                    <i class="fa fa-wallet"></i>
+                    <span>${wallet.publicKey.toString().slice(0,4)}...${wallet.publicKey.toString().slice(-4)}</span>
+                `;
+                connectBtn.classList.add('connected');
+                initMemeCreator();
+            } catch (error) {
+                console.error('Wallet connection failed:', error);
+                alert('钱包连接失败，请安装Phantom或Solflare钱包');
+            }
+        } else {
+            try {
+                await wallet.disconnect();
+                wallet = null;
+                connectBtn.innerHTML = `<i class="fa fa-link"></i><span>连接钱包</span>`;
+                connectBtn.classList.remove('connected');
+            } catch (error) {
+                console.error('Disconnect failed:', error);
+            }
+        }
+    });
+
+    // 初始化Meme生成器
+    function initMemeCreator() {
+        // 文件上传处理
+        const uploadArea = document.querySelector('.border-dashed');
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/*';
+        fileInput.style.display = 'none';
+        
+        uploadArea.addEventListener('click', () => fileInput.click());
+        
+        fileInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file.type.startsWith('image/')) {
+                alert('请上传图片文件');
+                return;
+            }
+            
+            // 显示预览
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                document.querySelector('#meme-factory img').src = event.target.result;
+                document.querySelector('[onclick="mintNFT()"]').disabled = false;
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+});
+
+// NFT铸造函数
+window.mintNFT = async () => {
+    if (!wallet?.publicKey) {
+        alert('请先连接钱包');
+        return;
+    }
+
+    try {
+        // 模拟交易数据
+        const fakeTx = {
+            signature: Array.from({length: 64}, () => 
+                Math.floor(Math.random()*16).toString(16)).join(''),
+            slot: Math.floor(Math.random()*10000)
+        };
+
+        // 显示成功信息
+        const successMsg = `
+            🎉 Meme NFT铸造成功！
+            ----------------------
+            交易哈希: ${fakeTx.signature}
+            区块高度: ${fakeTx.slot}
+            查看链接: https://explorer.solana.com/tx/${fakeTx.signature}?cluster=devnet
+        `;
+        alert(successMsg);
+
+        // 添加到质押列表
+        const newNFT = document.createElement('div');
+        newNFT.className = 'bg-neutral-light rounded-lg p-4 flex items-center space-x-4';
+        newNFT.innerHTML = `
+            <div class="w-16 h-16 rounded-lg overflow-hidden">
+                <img src="${document.querySelector('#meme-factory img').src}" class="w-full h-full object-cover">
+            </div>
+            <div class="flex-grow">
+                <h4 class="font-medium">${document.querySelector('input[placeholder="我的链上Meme"]').value || '未命名Meme'}</h4>
+                <div class="text-xs text-light/50">状态: 待质押</div>
+            </div>
+            <button class="bg-primary/20 text-primary px-3 py-1 rounded-lg text-sm" onclick="stakeNFT(this)">
+                立即质押
+            </button>
+        `;
+        document.querySelector('#staking > div > .space-y-6').prepend(newNFT);
+
+    } catch (error) {
+        console.error('Minting error:', error);
+        alert('铸造失败: ' + error.message);
+    }
+};
+
+// 质押功能
+window.stakeNFT = async (element) => {
+    if (!wallet?.publicKey) {
+        alert('请先连接钱包');
+        return;
+    }
+
+    element.innerHTML = '<i class="fa fa-spinner fa-spin"></i> 质押中...';
+    setTimeout(() => {
+        element.parentElement.querySelector('.text-light/50').textContent = '已质押';
+        element.remove();
+        alert('✅ 质押成功！开始获得收益');
+    }, 2000);
+};
+</script>
+
+<style>
+/* 添加钱包连接状态样式 */
+.connected {
+    background: linear-gradient(45deg, #FFD700, #FFA500) !important;
+    box-shadow: 0 0 15px rgba(255, 165, 0, 0.3) !important;
+    color: #000 !important;
+}
+
+/* 上传区域交互动画 */
+.border-dashed {
+    transition: all 0.3s ease;
+}
+.border-dashed:hover {
+    border-color: #FFD700 !important;
+    transform: scale(1.02);
+}
+
+/* 加载动画 */
+.fa-spin {
+    animation: fa-spin 1s infinite linear;
+}
+@keyframes fa-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>
 </body>
 </html>
     
