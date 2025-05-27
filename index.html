@@ -1673,6 +1673,30 @@
             }
 
             let testTokenBalance = 0;
+            let lastClaimTime = 0;
+            // 获取本地钱包余额
+            function getWalletKey() {
+                return walletAddress ? `test-balance-${walletAddress}` : null;
+            }
+            function loadTestBalance() {
+                if (!walletAddress) return;
+                const key = getWalletKey();
+                const data = localStorage.getItem(key);
+                if (data) {
+                    const obj = JSON.parse(data);
+                    testTokenBalance = obj.balance || 0;
+                    lastClaimTime = obj.lastClaimTime || 0;
+                } else {
+                    testTokenBalance = 0;
+                    lastClaimTime = 0;
+                }
+                updateTestBalance();
+            }
+            function saveTestBalance() {
+                if (!walletAddress) return;
+                const key = getWalletKey();
+                localStorage.setItem(key, JSON.stringify({ balance: testTokenBalance, lastClaimTime }));
+            }
             // 显示test余额的元素
             let testBalanceDisplay = document.createElement('div');
             testBalanceDisplay.id = 'test-balance-display';
@@ -1686,16 +1710,32 @@
 
             // 领取test代币入口
             let claimDiv = document.createElement('div');
-            claimDiv.style = 'position:fixed;top:140px;right:24px;z-index:9999;background:#222;padding:14px 18px 12px 18px;border-radius:8px;color:#fff;box-shadow:0 2px 8px #0003;min-width:220px;';
+            claimDiv.style = 'position:fixed;top:140px;right:24px;z-index:9999;background:#222;padding:14px 18px 12px 18px;border-radius:8px;color:#fff;box-shadow:0 2px 8px #0003;min-width:260px;display:none;';
             claimDiv.innerHTML = `
-                <div style="font-weight:bold;color:#FFD700;margin-bottom:6px;">领取Test代币</div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                  <span style="font-weight:bold;color:#FFD700;">领取Test代币</span>
+                  <span id="close-claim" style="cursor:pointer;font-size:18px;color:#FFD700;">&times;</span>
+                </div>
                 <input id="claim-address" type="text" placeholder="输入钱包地址" style="width:100%;padding:6px 8px;border-radius:4px;border:1px solid #444;background:#111;color:#FFD700;margin-bottom:8px;outline:none;">
                 <button id="claim-test-btn" style="width:100%;background:#FFD700;color:#222;font-weight:bold;padding:6px 0;border:none;border-radius:4px;cursor:pointer;">领取 1 个Test</button>
                 <div id="claim-msg" style="margin-top:6px;font-size:12px;color:#FFD700;"></div>
             `;
             document.body.appendChild(claimDiv);
+            document.getElementById('close-claim').onclick = function() {
+                claimDiv.style.display = 'none';
+            };
+            // 唤醒领取界面按钮
+            let openClaimBtn = document.createElement('button');
+            openClaimBtn.id = 'open-claim-btn';
+            openClaimBtn.innerHTML = '领取Test代币';
+            openClaimBtn.style = 'position:fixed;top:200px;right:24px;z-index:9999;background:#FFD700;color:#222;font-weight:bold;padding:8px 18px;border:none;border-radius:8px;box-shadow:0 2px 8px #0003;cursor:pointer;';
+            document.body.appendChild(openClaimBtn);
+            openClaimBtn.onclick = function() {
+                claimDiv.style.display = '';
+            };
             document.getElementById('claim-test-btn').onclick = function() {
                 const inputAddr = document.getElementById('claim-address').value.trim();
+                const now = Date.now();
                 if (!walletAddress) {
                     document.getElementById('claim-msg').textContent = '请先连接钱包';
                     return;
@@ -1708,13 +1748,20 @@
                     document.getElementById('claim-msg').textContent = '地址需与已连接钱包一致';
                     return;
                 }
+                if (now - lastClaimTime < 3600 * 1000) {
+                    const remain = Math.ceil((3600 * 1000 - (now - lastClaimTime)) / 60000);
+                    document.getElementById('claim-msg').textContent = `每小时只能领取一次，请${remain}分钟后再试`;
+                    return;
+                }
                 testTokenBalance += 1;
+                lastClaimTime = now;
                 updateTestBalance();
+                saveTestBalance();
                 document.getElementById('claim-msg').textContent = '领取成功，Test余额+1';
             };
 
             // 连接钱包后显示余额
-            async function connectWallet() {
+            async function connectWallet(auto = false) {
                 if (!window.solana || !window.solana.isPhantom) {
                     alert("Phantom钱包未安装! 请先安装Phantom钱包扩展程序。");
                     window.open("https://phantom.app/", "_blank");
@@ -1733,25 +1780,25 @@
                     document.dispatchEvent(new CustomEvent('walletConnected', {
                         detail: { address: walletAddress, publicKey: publicKey }
                     }));
-                    // 连接钱包后显示test余额
                     testBalanceDisplay.style.display = '';
-                    claimDiv.style.display = '';
-                    updateTestBalance();
+                    claimDiv.style.display = 'none';
+                    openClaimBtn.style.display = '';
+                    loadTestBalance();
                     return publicKey;
                 } catch (err) {
-                    console.error("Failed to connect wallet:", err);
-                    alert("连接钱包失败: " + err.message);
+                    if (!auto) alert("连接钱包失败: " + err.message);
                 }
             }
             // 初始隐藏test余额和领取入口
             testBalanceDisplay.style.display = 'none';
             claimDiv.style.display = 'none';
+            openClaimBtn.style.display = 'none';
 
-            // 所有模拟交易前检查test余额
-            function requireTestToken(action) {
+            // 所有模拟交易前检查test余额和钱包连接
+            async function requireTestToken(action) {
                 if (!walletAddress) {
-                    alert('请先连接钱包');
-                    return false;
+                    await connectWallet(true);
+                    if (!walletAddress) return false;
                 }
                 if (testTokenBalance < 1) {
                     alert('Test代币余额不足，无法进行此操作。请先领取Test代币。');
@@ -1759,41 +1806,41 @@
                 }
                 testTokenBalance -= 1;
                 updateTestBalance();
+                saveTestBalance();
                 return true;
             }
 
             // 修改模拟质押
             stakeBtns.forEach((btn, idx) => {
-                btn.addEventListener('click', function(e) {
-                    if (!requireTestToken('stake')) return;
+                btn.onclick = async function(e) {
+                    if (!await requireTestToken('stake')) return;
                     btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> 质押中...';
                     btn.disabled = true;
                     setTimeout(() => {
                         btn.innerHTML = '<i class="fa fa-check"></i> 质押成功';
                         btn.classList.add('opacity-60');
                     }, 1200);
-                });
+                };
             });
             // 修改模拟确认质押
             if (confirmStakeBtn) {
-                confirmStakeBtn.addEventListener('click', function(e) {
-                    if (!requireTestToken('confirmStake')) return;
+                confirmStakeBtn.onclick = async function(e) {
+                    if (!await requireTestToken('confirmStake')) return;
                     confirmStakeBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> 质押中...';
                     confirmStakeBtn.disabled = true;
                     setTimeout(() => {
                         confirmStakeBtn.innerHTML = '<i class="fa fa-check"></i> 质押成功';
                         confirmStakeBtn.classList.add('opacity-60');
                     }, 1200);
-                });
+                };
             }
             // 修改铸造NFT
             if (mintNFTBtn) {
-                mintNFTBtn.addEventListener('click', async function(e) {
-                    if (!requireTestToken('mint')) return;
+                mintNFTBtn.onclick = async function(e) {
+                    if (!await requireTestToken('mint')) return;
                     if (!walletAddress) {
-                        alert('请先连接钱包');
-                        connectWalletBtn.scrollIntoView({ behavior: 'smooth' });
-                        return;
+                        await connectWallet(true);
+                        if (!walletAddress) return;
                     }
                     if (!uploadedImage) {
                         alert('请先上传图片并生成Meme');
@@ -1828,7 +1875,7 @@
                             `;
                         }, 2000);
                     }, 2500);
-                });
+                };
             }
         });
     </script>
