@@ -20,18 +20,18 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#FFD700',   // 金色
-                primary: '#FFD700',       // 金黄色（主色调）
-                secondary: '#FFB900',      // 琥珀黄（辅助色）
-                accent: '#FFA500',         // 橙黄色（强调色）
-                dark: '#0F172A',           // 深蓝色（保持不变）
-                light: '#F8FAFC',          // 亮白色（保持不变）
-                neutral: '#1E293B',        // 深灰色（保持不变）
-                'neutral-light': '#334155', // 中灰色（保持不变）
-                'neutral-dark': '#020617', // 近黑色（保持不变）
-                gold: '#FFD700',           // 新增：金色
-                amber: '#FFB900',          // 新增：琥珀黄
-                'yellow-accent': '#FFA500' // 新增：橙黄色
+                        primary: '#FFD700',   // Gold
+                primary: '#FFD700',       // Gold (primary)
+                secondary: '#FFB900',      // Amber (secondary)
+                accent: '#FFA500',         // Orange (accent)
+                dark: '#0F172A',           // Dark blue (unchanged)
+                light: '#F8FAFC',          // Light white (unchanged)
+                neutral: '#1E293B',        // Dark gray (unchanged)
+                'neutral-light': '#334155', // Medium gray (unchanged)
+                'neutral-dark': '#020617', // Near black (unchanged)
+                gold: '#FFD700',           // New: Gold
+                amber: '#FFB900',          // New: Amber
+                'yellow-accent': '#FFA500' // New: Orange
                     },
                     fontFamily: {
                         inter: ['Inter', 'sans-serif'],
@@ -104,17 +104,17 @@
             </div>
             
             <div class="hidden md:flex items-center space-x-8">
-                <a href="#home" class="text-light/80 hover:text-primary transition-colors duration-300">首页</a>
-                <a href="#meme-factory" class="text-light/80 hover:text-primary transition-colors duration-300">Meme工厂</a>
-                <a href="#leaderboard" class="text-light/80 hover:text-primary transition-colors duration-300">热梗排行</a>
-                <a href="#staking" class="text-light/80 hover:text-primary transition-colors duration-300">质押挖矿</a>
-                <a href="#governance" class="text-light/80 hover:text-primary transition-colors duration-300">社区治理</a>
+                <a href="#home" class="text-light/80 hover:text-primary transition-colors duration-300">Home</a>
+                <a href="#meme-factory" class="text-light/80 hover:text-primary transition-colors duration-300">Meme Factory</a>
+                <a href="#leaderboard" class="text-light/80 hover:text-primary transition-colors duration-300">Leaderboard</a>
+                <a href="#staking" class="text-light/80 hover:text-primary transition-colors duration-300">Staking</a>
+                <a href="#governance" class="text-light/80 hover:text-primary transition-colors duration-300">Governance</a>
             </div>
             
             <div class="flex items-center space-x-4">
                 <button id="connect-wallet-btn" class="bg-accent hover:bg-accent/80 text-white px-5 py-2 rounded-full font-medium transition-all duration-300 transform hover:scale-105 flex items-center space-x-2">
                     <i class="fa fa-link"></i>
-                    <span>连接钱包</span>
+                    <span>Connect Wallet</span>
                 </button>
                 <button class="md:hidden text-light text-xl" id="mobile-menu-btn">
                     <i class="fa fa-bars"></i>
@@ -127,11 +127,11 @@
             <button id="close-menu-btn" class="absolute top-6 right-6 text-light text-2xl">
                 <i class="fa fa-times"></i>
             </button>
-            <a href="#home" class="text-light/80 hover:text-primary transition-colors duration-300">首页</a>
-            <a href="#meme-factory" class="text-light/80 hover:text-primary transition-colors duration-300">Meme工厂</a>
-            <a href="#leaderboard" class="text-light/80 hover:text-primary transition-colors duration-300">热梗排行</a>
-            <a href="#staking" class="text-light/80 hover:text-primary transition-colors duration-300">质押挖矿</a>
-            <a href="#governance" class="text-light/80 hover:text-primary transition-colors duration-300">社区治理</a>
+            <a href="#home" class="text-light/80 hover:text-primary transition-colors duration-300">Home</a>
+            <a href="#meme-factory" class="text-light/80 hover:text-primary transition-colors duration-300">Meme Factory</a>
+            <a href="#leaderboard" class="text-light/80 hover:text-primary transition-colors duration-300">Leaderboard</a>
+            <a href="#staking" class="text-light/80 hover:text-primary transition-colors duration-300">Staking</a>
+            <a href="#governance" class="text-light/80 hover:text-primary transition-colors duration-300">Governance</a>
         </div>
     </nav>
 
@@ -149,19 +149,19 @@
             <div class="flex flex-col md:flex-row items-center justify-between gap-12">
                 <div class="md:w-1/2 space-y-6">
                     <h1 class="text-[clamp(2.5rem,5vw,4rem)] font-bold leading-tight text-shadow-lg">
-                        <span class="block">质押表情包</span>
-                        <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">炒热链上梗</span>
+                        <span class="block">Stake Memes</span>
+                        <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Make On-chain Memes Hot</span>
                     </h1>
-                    <p class="text-xl text-light/80 max-w-lg">在Solana上玩梗也能赚SOL！上传魔性表情包，质押挖MEME，跟着社区炒热下一个链上顶流梗！</p>
+                    <p class="text-xl text-light/80 max-w-lg">Earn SOL by playing with memes on Solana! Upload your funniest meme, stake to mine MEME, and join the community to hype the next top on-chain meme!</p>
                     
                     <div class="flex flex-wrap gap-4 pt-4">
                         <button id="start-game-btn" class="bg-primary hover:bg-primary/80 text-dark px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 flex items-center space-x-2">
                             <i class="fa fa-gamepad"></i>
-                            <span>开始游戏</span>
+                            <span>Start Game</span>
                         </button>
                         <button id="view-tutorial-btn" class="bg-transparent border-2 border-light/30 hover:border-primary text-light hover:text-primary px-8 py-3 rounded-full font-semibold transition-all duration-300 flex items-center space-x-2">
                             <i class="fa fa-book"></i>
-                            <span>查看教程</span>
+                            <span>View Tutorial</span>
                         </button>
                     </div>
                     
@@ -174,7 +174,7 @@
                                 +2k
                             </div>
                         </div>
-                        <p class="text-sm text-light/70">已有 2,341 名玩家参与</p>
+                        <p class="text-sm text-light/70">2,341 players joined</p>
                     </div>
                 </div>
                 
@@ -184,8 +184,8 @@
                         <div class="relative bg-neutral rounded-2xl p-1 border border-light/10 overflow-hidden">
                             <div class="bg-neutral-light rounded-xl p-6">
                                 <div class="flex justify-between items-center mb-6">
-                                    <h3 class="font-bold text-lg">当前热梗</h3>
-                                    <span class="text-xs bg-accent/20 text-accent px-3 py-1 rounded-full">实时更新</span>
+                                    <h3 class="font-bold text-lg">Trending Memes</h3>
+                                    <span class="text-xs bg-accent/20 text-accent px-3 py-1 rounded-full">Live Update</span>
                                 </div>
                                 
                                 <div class="space-y-4">
@@ -196,7 +196,7 @@
                                         <div class="flex-grow">
                                             <h4 class="font-semibold">Retard Finder</h4>
                                             <div class="flex items-center text-xs text-light/60">
-                                                <span class="mr-2">创作者: @IfindRetards</span>
+                                                <span class="mr-2">Creator: @IfindRetards</span>
                                                 <span class="flex items-center">
                                                     <i class="fa fa-heart text-secondary mr-1"></i> 2.4k
                                                 </span>
@@ -214,7 +214,7 @@
                                         <div class="flex-grow">
                                             <h4 class="font-semibold">pepe</h4>
                                             <div class="flex items-center text-xs text-light/60">
-                                                <span class="mr-2">创作者: @pepecoineth</span>
+                                                <span class="mr-2">Creator: @pepecoineth</span>
                                                 <span class="flex items-center">
                                                     <i class="fa fa-heart text-secondary mr-1"></i> 1.8k
                                                 </span>
@@ -232,7 +232,7 @@
                                         <div class="flex-grow">
                                             <h4 class="font-semibold">POPCAT</h4>
                                             <div class="flex items-center text-xs text-light/60">
-                                                <span class="mr-2">创作者: @POPCATSOLANA</span>
+                                                <span class="mr-2">Creator: @POPCATSOLANA</span>
                                                 <span class="flex items-center">
                                                     <i class="fa fa-heart text-secondary mr-1"></i> 1.5k
                                                 </span>
@@ -245,7 +245,7 @@
                                 </div>
                                 
                                 <button id="view-all-memes-btn" class="w-full mt-6 bg-accent hover:bg-accent/80 text-white py-3 rounded-lg font-medium transition-colors duration-300">
-                                    查看全部热梗
+                                    View All Memes
                                 </button>
                             </div>
                         </div>
@@ -257,19 +257,19 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20">
                 <div class="bg-neutral/50 backdrop-blur-sm rounded-xl p-6 border border-light/10">
                     <h3 class="text-3xl font-bold text-primary mb-1">12.5K+</h3>
-                    <p class="text-light/70 text-sm">生成的Meme NFT</p>
+                    <p class="text-light/70 text-sm">Memes NFTs Generated</p>
                 </div>
                 <div class="bg-neutral/50 backdrop-blur-sm rounded-xl p-6 border border-light/10">
                     <h3 class="text-3xl font-bold text-secondary mb-1">4.2K+</h3>
-                    <p class="text-light/70 text-sm">活跃创作者</p>
+                    <p class="text-light/70 text-sm">Active Creators</p>
                 </div>
                 <div class="bg-neutral/50 backdrop-blur-sm rounded-xl p-6 border border-light/10">
                     <h3 class="text-3xl font-bold text-accent mb-1">89.7K</h3>
-                    <p class="text-light/70 text-sm">SoBonk流通量</p>
+                    <p class="text-light/70 text-sm">SoBonk Circulation</p>
                 </div>
                 <div class="bg-neutral/50 backdrop-blur-sm rounded-xl p-6 border border-light/10">
                     <h3 class="text-3xl font-bold text-primary mb-1">2.3K</h3>
-                    <p class="text-light/70 text-sm">质押收益池</p>
+                    <p class="text-light/70 text-sm">Staking Reward Pool</p>
                 </div>
             </div>
         </div>
@@ -282,51 +282,51 @@
         
         <div class="container mx-auto px-4 relative z-20">
             <div class="text-center mb-16">
-                <h2 class="text-[clamp(2rem,4vw,3rem)] font-bold mb-4">Meme工厂</h2>
-                <p class="text-light/70 max-w-2xl mx-auto text-lg">上传图片，添加文字，生成属于你的链上meme NFT，还能质押它赚取收益！</p>
+                <h2 class="text-[clamp(2rem,4vw,3rem)] font-bold mb-4">Meme Factory</h2>
+                <p class="text-light/70 max-w-2xl mx-auto text-lg">Upload images, add text, generate your own on-chain meme NFT, and earn rewards by staking it!</p>
             </div>
             
             <div class="flex flex-col md:flex-row gap-8 items-center">
                 <div class="md:w-1/2 space-y-6">
                     <div class="bg-neutral rounded-xl p-6 border border-light/10">
-                        <h3 class="text-xl font-bold mb-4">创建你的Meme NFT</h3>
+                        <h3 class="text-xl font-bold mb-4">Create Your Meme NFT</h3>
                         
                         <div class="space-y-4">
                             <div>
-                                <label class="block text-light/80 mb-2 text-sm">选择图片</label>
+                                <label class="block text-light/80 mb-2 text-sm">Select Image</label>
                                 <div class="border-2 border-dashed border-light/20 rounded-lg p-6 text-center cursor-pointer hover:border-primary transition-colors duration-300">
                                     <i class="fa fa-cloud-upload text-4xl text-light/40 mb-2"></i>
-                                    <p class="text-light/60">点击上传图片或拖放至此处</p>
-                                    <p class="text-xs text-light/40 mt-1">支持 JPG, PNG, GIF 格式，最大 10MB</p>
+                                    <p class="text-light/60">Click to upload image or drag and drop here</p>
+                                    <p class="text-xs text-light/40 mt-1">Supported formats: JPG, PNG, GIF, up to 10MB</p>
                                 </div>
                             </div>
                             
                             <div>
-                                <label class="block text-light/80 mb-2 text-sm">添加文字</label>
-                                <input type="text" placeholder="顶部文字" class="w-full bg-neutral-light border border-light/10 rounded-lg px-4 py-3 text-light focus:outline-none focus:border-primary transition-colors duration-300">
-                                <input type="text" placeholder="底部文字" class="w-full bg-neutral-light border border-light/10 rounded-lg px-4 py-3 text-light focus:outline-none focus:border-primary transition-colors duration-300 mt-3">
+                                <label class="block text-light/80 mb-2 text-sm">Add Text</label>
+                                <input type="text" placeholder="Top Text" class="w-full bg-neutral-light border border-light/10 rounded-lg px-4 py-3 text-light focus:outline-none focus:border-primary transition-colors duration-300">
+                                <input type="text" placeholder="Bottom Text" class="w-full bg-neutral-light border border-light/10 rounded-lg px-4 py-3 text-light focus:outline-none focus:border-primary transition-colors duration-300 mt-3">
                             </div>
                             
                           
                             
                             <button class="w-full bg-primary hover:bg-primary/80 text-dark py-3 rounded-lg font-semibold transition-colors duration-300 flex items-center justify-center space-x-2" id="generate-meme-btn">
                                 <i class="fa fa-magic"></i>
-                                <span>生成Meme NFT</span>
+                                <span>Generate Meme NFT</span>
                             </button>
                         </div>
                     </div>
                     
                     <div class="bg-neutral rounded-xl p-6 border border-light/10">
-                        <h3 class="text-xl font-bold mb-4">铸造设置</h3>
+                        <h3 class="text-xl font-bold mb-4">Minting Settings</h3>
                         
                         <div class="space-y-4">
                             <div>
-                                <label class="block text-light/80 mb-2 text-sm">NFT名称</label>
-                                <input type="text" placeholder="我的链上Meme" class="w-full bg-neutral-light border border-light/10 rounded-lg px-4 py-3 text-light focus:outline-none focus:border-primary transition-colors duration-300">
+                                <label class="block text-light/80 mb-2 text-sm">NFT Name</label>
+                                <input type="text" placeholder="My On-chain Meme" class="w-full bg-neutral-light border border-light/10 rounded-lg px-4 py-3 text-light focus:outline-none focus:border-primary transition-colors duration-300">
                             </div>
                             
                             <div>
-                                <label class="block text-light/80 mb-2 text-sm">版税设置（%）</label>
+                                <label class="block text-light/80 mb-2 text-sm">Royalty Percentage (%)</label>
                                 <div class="flex items-center space-x-4">
                                     <input type="range" min="0" max="10" step="0.5" value="5" class="w-full accent-primary">
                                     <span class="text-light/80 min-w-[30px]">5%</span>
@@ -335,17 +335,17 @@
                             
                             <div class="flex items-center space-x-2">
                                 <input type="checkbox" id="sell-on-marketplace" class="accent-primary">
-                                <label for="sell-on-marketplace" class="text-light/80 text-sm">同时在市场上列出出售</label>
+                                <label for="sell-on-marketplace" class="text-light/80 text-sm">Sell on Marketplace</label>
                             </div>
                             
                             <div class="flex items-center space-x-2">
                                 <input type="checkbox" id="enable-staking" class="accent-primary">
-                                <label for="enable-staking" class="text-light/80 text-sm">允许他人质押此NFT获取收益</label>
+                                <label for="enable-staking" class="text-light/80 text-sm">Allow Others to Stake</label>
                             </div>
                             
                             <button class="w-full bg-accent hover:bg-accent/80 text-white py-3 rounded-lg font-semibold transition-colors duration-300 flex items-center justify-center space-x-2" id="save-settings-btn">
                                 <i class="fa fa-save"></i>
-                                <span>保存设置</span>
+                                <span>Save Settings</span>
                             </button>
                         </div>
                     </div>
@@ -353,57 +353,57 @@
                 
                 <div class="md:w-1/2">
                     <div class="bg-neutral rounded-xl p-6 border border-light/10">
-                        <h3 class="text-xl font-bold mb-4">预览</h3>
+                        <h3 class="text-xl font-bold mb-4">Preview</h3>
                         
                         <div class="relative rounded-lg overflow-hidden mb-4">
                             <img src="https://picsum.photos/id/27/600/400" alt="Meme Preview" class="w-full h-auto" id="meme-preview-img">
                             <div class="absolute top-4 left-0 right-0 text-center">
-                                <h4 class="text-2xl font-bold text-white text-shadow-lg" id="top-text-preview">Solana上的Meme</h4>
+                                <h4 class="text-2xl font-bold text-white text-shadow-lg" id="top-text-preview">Meme on Solana</h4>
                             </div>
                             <div class="absolute bottom-4 left-0 right-0 text-center">
-                                <h4 class="text-2xl font-bold text-white text-shadow-lg" id="bottom-text-preview">质押即挖矿</h4>
+                                <h4 class="text-2xl font-bold text-white text-shadow-lg" id="bottom-text-preview">Stake to Mine</h4>
                             </div>
                         </div>
                         
                         <div class="space-y-4">
                             <div class="flex justify-between items-center">
-                                <span class="text-light/70">铸造费用</span>
+                                <span class="text-light/70">Minting Fee</span>
                                 <span class="font-semibold">0.02 SOL</span>
                             </div>
                             <div class="flex justify-between items-center">
-                                <span class="text-light/70">预估Gas费</span>
+                                <span class="text-light/70">Estimated Gas Fee</span>
                                 <span class="font-semibold">0.001 SOL</span>
                             </div>
                             <div class="flex justify-between items-center">
-                                <span class="text-light/70">总费用</span>
+                                <span class="text-light/70">Total Cost</span>
                                 <span class="font-semibold text-primary">0.021 SOL</span>
                             </div>
                             
                             <button class="w-full bg-secondary hover:bg-secondary/80 text-white py-3 rounded-lg font-semibold transition-colors duration-300 flex items-center justify-center space-x-2" id="mint-nft-btn">
                                 <i class="fa fa-send"></i>
-                                <span>铸造并上传到Solana</span>
+                                <span>Mint and Upload to Solana</span>
                             </button>
                         </div>
                     </div>
                     
                     <div class="mt-6 bg-neutral rounded-xl p-6 border border-light/10">
-                        <h3 class="text-xl font-bold mb-4">铸造提示</h3>
+                        <h3 class="text-xl font-bold mb-4">Minting Tips</h3>
                         <ul class="space-y-2 text-light/70">
                             <li class="flex items-start">
                                 <i class="fa fa-info-circle text-primary mt-1 mr-2"></i>
-                                <span>铸造成功后，你的meme将永久保存在Solana区块链上</span>
+                                <span>After minting, your meme will be permanently stored on the Solana blockchain</span>
                             </li>
                             <li class="flex items-start">
                                 <i class="fa fa-info-circle text-primary mt-1 mr-2"></i>
-                                <span>每次你的NFT被交易，你都将获得版税收益</span>
+                                <span>Each time your NFT is traded, you will receive royalty earnings</span>
                             </li>
                             <li class="flex items-start">
                                 <i class="fa fa-info-circle text-primary mt-1 mr-2"></i>
-                                <span>热门meme可能会获得额外的SOL奖励和社区曝光</span>
+                                <span>Popular memes may receive additional SOL rewards and community exposure</span>
                             </li>
                             <li class="flex items-start">
                                 <i class="fa fa-info-circle text-primary mt-1 mr-2"></i>
-                                <span>确保你的内容符合社区准则，违规内容可能会被下架</span>
+                                <span>Ensure your content complies with community guidelines, inappropriate content may be removed</span>
                             </li>
                         </ul>
                     </div>
@@ -418,8 +418,8 @@
         
         <div class="container mx-auto px-4 relative z-20">
             <div class="text-center mb-16">
-                <h2 class="text-[clamp(2rem,4vw,3rem)] font-bold mb-4">热梗排行榜</h2>
-                <p class="text-light/70 max-w-2xl mx-auto text-lg">每周评选最具传播力的链上meme，赢取SOL奖励和社区荣誉！</p>
+                <h2 class="text-[clamp(2rem,4vw,3rem)] font-bold mb-4">Leaderboard</h2>
+                <p class="text-light/70 max-w-2xl mx-auto text-lg">Weekly评选最具传播力的链上meme，赢取SOL奖励和社区荣誉！</p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -434,7 +434,7 @@
                                 <img src="imgs/1.jpg" alt="Top Meme" class="w-full h-auto">
                             </div>
                             <h3 class="font-bold text-xl mb-1">Retard Finder</h3>
-                            <p class="text-light/70 text-sm mb-3">创作者: @IfindRetards</p>
+                            <p class="text-light/70 text-sm mb-3">Creator: @IfindRetards</p>
                             
                             <div class="grid grid-cols-2 gap-3 mb-4">
                                 <div class="bg-neutral-light rounded-lg p-3 text-center">
@@ -470,7 +470,7 @@
                                 <img src="imgs/2.jpg" alt="Top Meme" class="w-full h-auto">
                             </div>
                             <h3 class="font-bold text-xl mb-1">pepe</h3>
-                            <p class="text-light/70 text-sm mb-3">创作者: @pepecoineth</p>
+                            <p class="text-light/70 text-sm mb-3">Creator: @pepecoineth</p>
                             
                             <div class="grid grid-cols-2 gap-3 mb-4">
                                 <div class="bg-neutral-light rounded-lg p-3 text-center">
@@ -506,7 +506,7 @@
                                 <img src="imgs/3.jpg" alt="Top Meme" class="w-full h-auto">
                             </div>
                             <h3 class="font-bold text-xl mb-1">POPCAT</h3>
-                            <p class="text-light/70 text-sm mb-3">创作者: @POPCATSOLANA</p>
+                            <p class="text-light/70 text-sm mb-3">Creator: @POPCATSOLANA</p>
                             
                             <div class="grid grid-cols-2 gap-3 mb-4">
                                 <div class="bg-neutral-light rounded-lg p-3 text-center">
@@ -537,7 +537,7 @@
                 <!-- Leaderboard Table -->
                 <div class="md:col-span-2 bg-neutral rounded-xl p-6 border border-light/10">
                     <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-xl font-bold">热梗排行</h3>
+                        <h3 class="text-xl font-bold">Leaderboard</h3>
                         <div class="flex space-x-2">
                             <button class="bg-primary/20 text-primary px-4 py-1 rounded-lg text-sm font-medium">本周</button>
                             <button class="bg-neutral-light hover:bg-neutral-light/80 text-light/70 px-4 py-1 rounded-lg text-sm font-medium transition-colors duration-300">本月</button>
@@ -551,7 +551,7 @@
                                 <tr class="text-left border-b border-light/10">
                                     <th class="pb-3 text-light/60 font-medium">#</th>
                                     <th class="pb-3 text-light/60 font-medium">Meme</th>
-                                    <th class="pb-3 text-light/60 font-medium">创作者</th>
+                                    <th class="pb-3 text-light/60 font-medium">Creator</th>
                                     <th class="pb-3 text-light/60 font-medium">收藏量</th>
                                     <th class="pb-3 text-light/60 font-medium">传播得分</th>
                                     <th class="pb-3 text-light/60 font-medium">趋势</th>
@@ -691,7 +691,7 @@
             
             <!-- Trend Chart -->
             <div class="mt-12 bg-neutral rounded-xl p-6 border border-light/10">
-                <h3 class="text-xl font-bold mb-6">Meme热度趋势</h3>
+                <h3 class="text-xl font-bold mb-6">Meme Popularity Trend</h3>
                 <div class="h-80">
                     <canvas id="trendChart"></canvas>
                 </div>
@@ -705,15 +705,15 @@
         
         <div class="container mx-auto px-4 relative z-20">
             <div class="text-center mb-16">
-                <h2 class="text-[clamp(2rem,4vw,3rem)] font-bold mb-4">质押挖矿</h2>
-                <p class="text-light/70 max-w-2xl mx-auto text-lg">质押你的meme NFT或SoBonk代币，参与生态建设并获取收益！</p>
+                <h2 class="text-[clamp(2rem,4vw,3rem)] font-bold mb-4">Staking</h2>
+                <p class="text-light/70 max-w-2xl mx-auto text-lg">Stake your meme NFT or SoBonk tokens, participate in ecosystem development, and earn rewards!</p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- NFT Staking -->
                 <div class="bg-neutral rounded-xl p-6 border border-light/10">
                     <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-xl font-bold">NFT质押</h3>
+                        <h3 class="text-xl font-bold">NFT Staking</h3>
                         <span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-sm">APY: 87.5%</span>
                     </div>
                     
@@ -793,7 +793,7 @@
                 <!-- Token Staking -->
                 <div class="bg-neutral rounded-xl p-6 border border-light/10">
                     <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-xl font-bold">代币质押</h3>
+                        <h3 class="text-xl font-bold">Token Staking</h3>
                         <span class="bg-secondary/20 text-secondary px-3 py-1 rounded-full text-sm">APY: 45.2%</span>
                     </div>
                     
@@ -884,15 +884,15 @@
         
         <div class="container mx-auto px-4 relative z-20">
             <div class="text-center mb-16">
-                <h2 class="text-[clamp(2rem,4vw,3rem)] font-bold mb-4">社区治理</h2>
-                <p class="text-light/70 max-w-2xl mx-auto text-lg">参与项目决策，投票决定未来方向，共建SoBonk生态！</p>
+                <h2 class="text-[clamp(2rem,4vw,3rem)] font-bold mb-4">Governance</h2>
+                <p class="text-light/70 max-w-2xl mx-auto text-lg">Participate in project decision-making, vote on future direction, and build the SoBonk ecosystem!</p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Active Proposals -->
                 <div class="md:col-span-2 bg-neutral rounded-xl p-6 border border-light/10">
                     <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-xl font-bold">活跃提案</h3>
+                        <h3 class="text-xl font-bold">Active Proposals</h3>
                         <button class="bg-primary hover:bg-primary/80 text-dark px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-300">
                             提交新提案
                         </button>
@@ -989,11 +989,11 @@
                 
                 <!-- Governance Stats -->
                 <div class="bg-neutral rounded-xl p-6 border border-light/10">
-                    <h3 class="text-xl font-bold mb-6">治理统计</h3>
+                    <h3 class="text-xl font-bold mb-6">Governance Statistics</h3>
                     
                     <div class="space-y-6">
                         <div class="bg-neutral-light rounded-lg p-4">
-                            <h4 class="font-medium mb-3">治理代币</h4>
+                            <h4 class="font-medium mb-3">Governance Tokens</h4>
                             <div class="flex items-center space-x-3 mb-3">
                                 <div class="w-10 h-10 bg-accent rounded-full flex items-center justify-center">
                                     <i class="fa fa-diamond text-white"></i>
@@ -1140,10 +1140,10 @@
                 <div>
                     <h3 class="text-lg font-bold mb-6">功能</h3>
                     <ul class="space-y-3">
-                        <li><a href="#meme-factory" class="text-light/70 hover:text-primary transition-colors duration-300">Meme工厂</a></li>
-                        <li><a href="#leaderboard" class="text-light/70 hover:text-primary transition-colors duration-300">热梗排行</a></li>
-                        <li><a href="#staking" class="text-light/70 hover:text-primary transition-colors duration-300">质押挖矿</a></li>
-                        <li><a href="#governance" class="text-light/70 hover:text-primary transition-colors duration-300">社区治理</a></li>
+                        <li><a href="#meme-factory" class="text-light/70 hover:text-primary transition-colors duration-300">Meme Factory</a></li>
+                        <li><a href="#leaderboard" class="text-light/70 hover:text-primary transition-colors duration-300">Leaderboard</a></li>
+                        <li><a href="#staking" class="text-light/70 hover:text-primary transition-colors duration-300">Staking</a></li>
+                        <li><a href="#governance" class="text-light/70 hover:text-primary transition-colors duration-300">Governance</a></li>
                         <li><a href="#" class="text-light/70 hover:text-primary transition-colors duration-300">NFT市场</a></li>
                     </ul>
                 </div>
