@@ -727,7 +727,7 @@
                                 <div class="text-xs text-light/50">NFT #1234 · Rarity: Epic</div>
                             </div>
                             <button class="bg-primary hover:bg-primary/80 text-dark px-4 py-1.5 rounded-lg text-sm font-medium transition-colors duration-300 nft-stake-btn">
-                                质押
+                                impawn
                             </button>
                         </div>
                         
@@ -740,7 +740,7 @@
                                 <div class="text-xs text-light/50">NFT #2345 · Rarity: Legendary</div>
                             </div>
                             <button class="bg-primary hover:bg-primary/80 text-dark px-4 py-1.5 rounded-lg text-sm font-medium transition-colors duration-300 nft-stake-btn">
-                                质押
+                                impawn
                             </button>
                         </div>
                         
@@ -1655,14 +1655,14 @@
                 });
             }
 
-            // 质押挖矿区所有"质押"按钮：模拟质押
+            // impawn挖矿区所有"impawn"按钮：模拟impawn
             document.querySelectorAll('.nft-stake-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const original = btn.innerHTML;
-                    btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> <span>质押中...</span>';
+                    btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> <span>Staking...</span>';
                     btn.disabled = true;
                     setTimeout(() => {
-                        btn.innerHTML = '<i class="fa fa-check"></i> <span>质押成功</span>';
+                        btn.innerHTML = '<i class="fa fa-check"></i> <span>impawnsucceed</span>';
                         setTimeout(() => {
                             btn.innerHTML = original;
                             btn.disabled = false;
@@ -1671,15 +1671,15 @@
                 });
             });
 
-            // 代币质押区"确认质押"按钮：模拟质押
+            // 代币impawn区"确认impawn"按钮：模拟impawn
             const tokenStakeBtn = document.getElementById('token-stake-btn');
             if (tokenStakeBtn) {
                 tokenStakeBtn.addEventListener('click', function() {
                     const original = tokenStakeBtn.innerHTML;
-                    tokenStakeBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> <span>质押中...</span>';
+                    tokenStakeBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> <span>Staking...</span>';
                     tokenStakeBtn.disabled = true;
                     setTimeout(() => {
-                        tokenStakeBtn.innerHTML = '<i class="fa fa-check"></i> <span>质押成功</span>';
+                        tokenStakeBtn.innerHTML = '<i class="fa fa-check"></i> <span>impawnsucceed</span>';
                         setTimeout(() => {
                             tokenStakeBtn.innerHTML = original;
                             tokenStakeBtn.disabled = false;
@@ -1688,15 +1688,15 @@
                 });
             }
 
-            // 领取所有收益按钮：模拟领取
+            // Claim所有收益按钮：模拟Claim
             const claimRewardBtn = document.getElementById('claim-reward-btn');
             if (claimRewardBtn) {
                 claimRewardBtn.addEventListener('click', function() {
                     const original = claimRewardBtn.innerHTML;
-                    claimRewardBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> <span>领取中...</span>';
+                    claimRewardBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> <span>Claiming...</span>';
                     claimRewardBtn.disabled = true;
                     setTimeout(() => {
-                        claimRewardBtn.innerHTML = '<i class="fa fa-check"></i> <span>领取成功</span>';
+                        claimRewardBtn.innerHTML = '<i class="fa fa-check"></i> <span>Claimsucceed</span>';
                         setTimeout(() => {
                             claimRewardBtn.innerHTML = original;
                             claimRewardBtn.disabled = false;
@@ -1712,7 +1712,7 @@
                     btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> <span>投票中...</span>';
                     btn.disabled = true;
                     setTimeout(() => {
-                        btn.innerHTML = '<i class="fa fa-check"></i> <span>投票成功</span>';
+                        btn.innerHTML = '<i class="fa fa-check"></i> <span>投票succeed</span>';
                         setTimeout(() => {
                             btn.innerHTML = original;
                             btn.disabled = false;
