@@ -629,7 +629,7 @@
                                     <td class="py-4">
                                         <div class="flex items-center space-x-3">
                                             <div class="w-12 h-12 rounded-lg overflow-hidden">
-                                                <img src="4.jpg" alt="Meme" class="w-full h-full object-cover">
+                                                <img src="imgs/4.jpg" alt="Meme" class="w-full h-full object-cover">
                                             </div>
                                             <div>
                                                 <h4 class="font-medium">titcoin</h4>
@@ -651,7 +651,7 @@
                                     <td class="py-4">
                                         <div class="flex items-center space-x-3">
                                             <div class="w-12 h-12 rounded-lg overflow-hidden">
-                                                <img src="5.jpg" alt="Meme" class="w-full h-full object-cover">
+                                                <img src="imgs/5.jpg" alt="Meme" class="w-full h-full object-cover">
                                             </div>
                                             <div>
                                                 <h4 class="font-medium">Fartcoin</h4>
@@ -727,7 +727,7 @@
                                 <div class="text-xs text-light/50">NFT #1234 · Rarity: Epic</div>
                             </div>
                             <button class="bg-primary hover:bg-primary/80 text-dark px-4 py-1.5 rounded-lg text-sm font-medium transition-colors duration-300 nft-stake-btn">
-                                impawn
+                                Stake
                             </button>
                         </div>
                         
@@ -740,7 +740,7 @@
                                 <div class="text-xs text-light/50">NFT #2345 · Rarity: Legendary</div>
                             </div>
                             <button class="bg-primary hover:bg-primary/80 text-dark px-4 py-1.5 rounded-lg text-sm font-medium transition-colors duration-300 nft-stake-btn">
-                                impawn
+                                Stake
                             </button>
                         </div>
                         
@@ -753,39 +753,39 @@
                                 <div class="text-xs text-light/50">NFT #3456 · Rarity: Common</div>
                             </div>
                             <button class="bg-primary hover:bg-primary/80 text-dark px-4 py-1.5 rounded-lg text-sm font-medium transition-colors duration-300 nft-stake-btn">
-                             impawn
+                                Stake
                             </button>
                         </div>
                         
                         <button class="w-full bg-neutral-light hover:bg-neutral-light/80 text-light/80 py-3 rounded-lg font-medium transition-colors duration-300 flex items-center justify-center space-x-2">
                             <i class="fa fa-plus"></i>
-                            <span>1111</span>
+                            <span>Add More NFTs</span>
                         </button>
                     </div>
                     
                     <div class="mt-6 bg-neutral-light/50 rounded-lg p-4 border border-light/10">
-                        <h4 class="font-medium mb-3">Staking statistics</h4>
+                        <h4 class="font-medium mb-3">Staking Statistics</h4>
                         <div class="grid grid-cols-2 gap-3">
                             <div class="bg-neutral rounded-lg p-3">
-                                <div class="text-light/60 text-xs mb-1">Current staking</div>
+                                <div class="text-light/60 text-xs mb-1">Currently Staked</div>
                                 <div class="font-semibold">3 NFTs</div>
                             </div>
                             <div class="bg-neutral rounded-lg p-3">
-                                <div class="text-light/60 text-xs mb-1">Total value</div>
+                                <div class="text-light/60 text-xs mb-1">Total Value</div>
                                 <div class="font-semibold">4.2 SOL</div>
                             </div>
                             <div class="bg-neutral rounded-lg p-3">
-                                <div class="text-light/60 text-xs mb-1">Daily earnings</div>
+                                <div class="text-light/60 text-xs mb-1">Daily Earnings</div>
                                 <div class="font-semibold text-primary">0.12 SOL</div>
                             </div>
                             <div class="bg-neutral rounded-lg p-3">
-                                <div class="text-light/60 text-xs mb-1">Cumulative earnings</div>
+                                <div class="text-light/60 text-xs mb-1">Total Earned</div>
                                 <div class="font-semibold text-primary">1.87 SOL</div>
                             </div>
                         </div>
                         
-                        <button class="w-full mt-4 bg-primary hover:bg-primary/80 text-dark py-3 rounded-lg font-semibold transition-colors duration-300">
-                            Collect the proceeds
+                        <button class="w-full mt-4 bg-primary hover:bg-primary/80 text-dark py-3 rounded-lg font-semibold transition-colors duration-300" id="collect-earnings-btn">
+                            Collect Earnings
                         </button>
                     </div>
                 </div>
@@ -801,75 +801,75 @@
                         <div class="bg-neutral-light rounded-lg p-6">
                             <div class="flex justify-between items-center mb-4">
                                 <h4 class="font-medium">Someme</h4>
-                                <div class="text-xs text-light/50">available: 1,245.67 Someme</div>
+                                <div class="text-xs text-light/50">Available: 1,245.67 Someme</div>
                             </div>
                             
                             <div class="space-y-4">
                                 <div>
-                                    <label class="block text-light/80 mb-2 text-sm">The amount of stake</label>
+                                    <label class="block text-light/80 mb-2 text-sm">Stake Amount</label>
                                     <div class="relative">
-                                        <input type="number" placeholder="0.0" class="w-full bg-neutral border border-light/10 rounded-lg px-4 py-3 text-light focus:outline-none focus:border-primary transition-colors duration-300">
-                                        <button class="absolute right-2 top-2 bg-primary/20 text-primary px-2 py-1 rounded text-xs">MAX</button>
+                                        <input type="number" placeholder="0.0" class="w-full bg-neutral border border-light/10 rounded-lg px-4 py-3 text-light focus:outline-none focus:border-primary transition-colors duration-300" id="stake-amount-input">
+                                        <button class="absolute right-2 top-2 bg-primary/20 text-primary px-2 py-1 rounded text-xs" id="max-stake-btn">MAX</button>
                                     </div>
                                 </div>
                                 
                                 <div class="flex justify-between items-center text-sm">
                                     <div>
-                                        <span class="text-light/60">The total value of the staking pool:</span>
+                                        <span class="text-light/60">Total Staking Pool:</span>
                                         <span class="font-medium ml-1">89,750.23 Someme</span>
                                     </div>
                                     <div>
-                                        <span class="text-light/60">Your share:</span>
+                                        <span class="text-light/60">Your Share:</span>
                                         <span class="font-medium ml-1">1.4%</span>
                                     </div>
                                 </div>
                                 
                                 <div class="grid grid-cols-2 gap-3">
                                     <div class="bg-neutral rounded-lg p-3">
-                                        <div class="text-light/60 text-xs mb-1">Projected daily earnings</div>
+                                        <div class="text-light/60 text-xs mb-1">Est. Daily Earnings</div>
                                         <div class="font-semibold text-primary">12.45 Someme</div>
                                     </div>
                                     <div class="bg-neutral rounded-lg p-3">
-                                        <div class="text-light/60 text-xs mb-1">Lock-in period</div>
-                                        <div class="font-semibold">无</div>
+                                        <div class="text-light/60 text-xs mb-1">Lock Period</div>
+                                        <div class="font-semibold">None</div>
                                     </div>
                                 </div>
                                 
                                 <button id="token-stake-btn" class="w-full bg-primary hover:bg-primary/80 text-dark py-3 rounded-lg font-semibold transition-colors duration-300">
-                                  Confirm the stake
+                                    Confirm Stake
                                 </button>
                             </div>
                         </div>
                         
                         <div class="bg-neutral-light rounded-lg p-6">
-                            <h4 class="font-medium mb-4">Your staking</h4>
+                            <h4 class="font-medium mb-4">Your Stakes</h4>
                             
                             <div class="space-y-3">
                                 <div class="bg-neutral rounded-lg p-3 flex justify-between items-center">
                                     <div>
                                         <div class="font-medium">Someme</div>
-                                        <div class="text-xs text-light/50">Staking: 850.00 Someme</div>
+                                        <div class="text-xs text-light/50">Staked: 850.00 Someme</div>
                                     </div>
                                     <div class="text-right">
                                         <div class="font-semibold text-primary">2.45 Someme</div>
-                                        <div class="text-xs text-light/50">Earnings can be claimed</div>
+                                        <div class="text-xs text-light/50">Claimable Rewards</div>
                                     </div>
                                 </div>
                                 
                                 <div class="bg-neutral rounded-lg p-3 flex justify-between items-center">
                                     <div>
                                         <div class="font-medium">SOL</div>
-                                        <div class="text-xs text-light/50">Staking: 2.5 SOL</div>
+                                        <div class="text-xs text-light/50">Staked: 2.5 SOL</div>
                                     </div>
                                     <div class="text-right">
                                         <div class="font-semibold text-primary">0.03 SOL</div>
-                                        <div class="text-xs text-light/50">Earnings can be claimed</div>
+                                        <div class="text-xs text-light/50">Claimable Rewards</div>
                                     </div>
                                 </div>
                             </div>
                             
                             <button id="claim-reward-btn" class="w-full mt-4 bg-accent hover:bg-accent/80 text-white py-3 rounded-lg font-semibold transition-colors duration-300">
-                                Claim all your earnings
+                                Claim All Rewards
                             </button>
                         </div>
                     </div>
@@ -878,11 +878,181 @@
         </div>
     </section>
 
+    <!-- Governance Section -->
+    <section id="governance" class="py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-dark to-neutral z-0"></div>
+        <div class="absolute top-0 left-0 w-full h-20 bg-gradient-to-b from-neutral-dark to-transparent z-10"></div>
+        
+        <div class="container mx-auto px-4 relative z-20">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(2rem,4vw,3rem)] font-bold mb-4">Community Governance</h2>
+                <p class="text-light/70 max-w-2xl mx-auto text-lg">Participate in community decisions, propose changes, and vote on the future of Someme ecosystem!</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Active Proposals -->
+                <div class="bg-neutral rounded-xl p-6 border border-light/10">
+                    <h3 class="text-xl font-bold mb-6">Active Proposals</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-neutral-light rounded-lg p-4 border border-light/10">
+                            <div class="flex justify-between items-start mb-3">
+                                <h4 class="font-semibold">Increase Staking Rewards</h4>
+                                <span class="bg-accent/20 text-accent px-2 py-1 rounded text-xs">Active</span>
+                            </div>
+                            <p class="text-light/70 text-sm mb-4">Proposal to increase NFT staking rewards from 87.5% to 120% APY to attract more stakers.</p>
+                            
+                            <div class="mb-4">
+                                <div class="flex justify-between text-sm mb-2">
+                                    <span>Yes: 1,245 votes (73%)</span>
+                                    <span>No: 456 votes (27%)</span>
+                                </div>
+                                <div class="w-full bg-neutral rounded-full h-2">
+                                    <div class="bg-primary h-2 rounded-full" style="width: 73%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex space-x-3">
+                                <button class="flex-1 bg-primary hover:bg-primary/80 text-dark py-2 rounded-lg font-medium transition-colors duration-300 vote-yes-btn">
+                                    Vote Yes
+                                </button>
+                                <button class="flex-1 bg-secondary hover:bg-secondary/80 text-white py-2 rounded-lg font-medium transition-colors duration-300 vote-no-btn">
+                                    Vote No
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-neutral-light rounded-lg p-4 border border-light/10">
+                            <div class="flex justify-between items-start mb-3">
+                                <h4 class="font-semibold">New Meme Categories</h4>
+                                <span class="bg-accent/20 text-accent px-2 py-1 rounded text-xs">Active</span>
+                            </div>
+                            <p class="text-light/70 text-sm mb-4">Add new meme categories: AI-generated, Gaming, and DeFi themes for better organization.</p>
+                            
+                            <div class="mb-4">
+                                <div class="flex justify-between text-sm mb-2">
+                                    <span>Yes: 2,134 votes (89%)</span>
+                                    <span>No: 267 votes (11%)</span>
+                                </div>
+                                <div class="w-full bg-neutral rounded-full h-2">
+                                    <div class="bg-primary h-2 rounded-full" style="width: 89%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex space-x-3">
+                                <button class="flex-1 bg-primary hover:bg-primary/80 text-dark py-2 rounded-lg font-medium transition-colors duration-300 vote-yes-btn">
+                                    Vote Yes
+                                </button>
+                                <button class="flex-1 bg-secondary hover:bg-secondary/80 text-white py-2 rounded-lg font-medium transition-colors duration-300 vote-no-btn">
+                                    Vote No
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-neutral-light rounded-lg p-4 border border-light/10">
+                            <div class="flex justify-between items-start mb-3">
+                                <h4 class="font-semibold">Treasury Allocation</h4>
+                                <span class="bg-accent/20 text-accent px-2 py-1 rounded text-xs">Active</span>
+                            </div>
+                            <p class="text-light/70 text-sm mb-4">Allocate 30% of treasury funds for marketing and partnerships to grow the community.</p>
+                            
+                            <div class="mb-4">
+                                <div class="flex justify-between text-sm mb-2">
+                                    <span>Yes: 1,876 votes (67%)</span>
+                                    <span>No: 925 votes (33%)</span>
+                                </div>
+                                <div class="w-full bg-neutral rounded-full h-2">
+                                    <div class="bg-primary h-2 rounded-full" style="width: 67%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex space-x-3">
+                                <button class="flex-1 bg-primary hover:bg-primary/80 text-dark py-2 rounded-lg font-medium transition-colors duration-300 vote-yes-btn">
+                                    Vote Yes
+                                </button>
+                                <button class="flex-1 bg-secondary hover:bg-secondary/80 text-white py-2 rounded-lg font-medium transition-colors duration-300 vote-no-btn">
+                                    Vote No
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Governance Stats & Create Proposal -->
+                <div class="space-y-8">
+                    <div class="bg-neutral rounded-xl p-6 border border-light/10">
+                        <h3 class="text-xl font-bold mb-6">Governance Statistics</h3>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="bg-neutral-light rounded-lg p-4 text-center">
+                                <div class="text-2xl font-bold text-primary mb-1">132</div>
+                                <div class="text-light/60 text-sm">Total Proposals</div>
+                            </div>
+                            <div class="bg-neutral-light rounded-lg p-4 text-center">
+                                <div class="text-2xl font-bold text-secondary mb-1">5,647</div>
+                                <div class="text-light/60 text-sm">Active Voters</div>
+                            </div>
+                            <div class="bg-neutral-light rounded-lg p-4 text-center">
+                                <div class="text-2xl font-bold text-accent mb-1">87</div>
+                                <div class="text-light/60 text-sm">Passed</div>
+                            </div>
+                            <div class="bg-neutral-light rounded-lg p-4 text-center">
+                                <div class="text-2xl font-bold text-primary mb-1">37</div>
+                                <div class="text-light/60 text-sm">Rejected</div>
+                            </div>
+                        </div>
+                        
+                        <div class="h-64">
+                            <canvas id="proposalChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-neutral rounded-xl p-6 border border-light/10">
+                        <h3 class="text-xl font-bold mb-6">Create New Proposal</h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-light/80 mb-2 text-sm">Proposal Title</label>
+                                <input type="text" placeholder="Enter proposal title" class="w-full bg-neutral-light border border-light/10 rounded-lg px-4 py-3 text-light focus:outline-none focus:border-primary transition-colors duration-300">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-light/80 mb-2 text-sm">Description</label>
+                                <textarea placeholder="Describe your proposal in detail..." rows="4" class="w-full bg-neutral-light border border-light/10 rounded-lg px-4 py-3 text-light focus:outline-none focus:border-primary transition-colors duration-300 resize-none"></textarea>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-light/80 mb-2 text-sm">Category</label>
+                                <select class="w-full bg-neutral-light border border-light/10 rounded-lg px-4 py-3 text-light focus:outline-none focus:border-primary transition-colors duration-300">
+                                    <option>Select category</option>
+                                    <option>Technical Upgrade</option>
+                                    <option>Economic Parameters</option>
+                                    <option>Community Guidelines</option>
+                                    <option>Treasury Management</option>
+                                    <option>Partnership</option>
+                                </select>
+                            </div>
+                            
+                            <div class="bg-neutral-light/50 rounded-lg p-4 border border-light/10">
+                                <h4 class="font-medium mb-2">Requirements</h4>
+                                <ul class="text-sm text-light/70 space-y-1">
+                                    <li>• Must hold at least 1,000 Someme tokens</li>
+                                    <li>• Proposal creation fee: 10 SOL</li>
+                                    <li>• Voting period: 7 days</li>
+                                    <li>• Required quorum: 51%</li>
+                                </ul>
+                            </div>
+                            
+                            <button class="w-full bg-primary hover:bg-primary/80 text-dark py-3 rounded-lg font-semibold transition-colors duration-300" id="create-proposal-btn">
+                                Create Proposal (10 SOL)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        
-    <!-- Footer -->
-    <footer class="bg-neutral-dark py-12 relative overflow-hidden">
-        
     <!-- Footer -->
     <footer class="bg-neutral-dark py-12 relative overflow-hidden">
         <div class="absolute inset-0 bg-[url('https://picsum.photos/id/1/1920/1080')] bg-cover bg-center opacity-5 z-0"></div>
@@ -953,9 +1123,9 @@
                     <div class="mt-6">
                         <h4 class="text-base font-medium mb-3">Subscribe for updates</h4>
                         <div class="flex">
-                            <input type="email" placeholder="你的邮箱" class="flex-1 bg-neutral border border-light/10 rounded-l-lg px-4 py-2 text-light focus:outline-none focus:border-primary transition-colors duration-300">
-                            <button class="bg-primary hover:bg-primary/80 text-dark px-4 py-2 rounded-r-lg font-medium transition-colors duration-300">
-                                订阅
+                            <input type="email" placeholder="Your email" class="flex-1 bg-neutral border border-light/10 rounded-l-lg px-4 py-2 text-light focus:outline-none focus:border-primary transition-colors duration-300">
+                            <button class="bg-primary hover:bg-primary/80 text-dark px-4 py-2 rounded-r-lg font-medium transition-colors duration-300" id="subscribe-btn">
+                                Subscribe
                             </button>
                         </div>
                     </div>
@@ -1427,14 +1597,14 @@
                 });
             }
 
-            // impawn挖矿区所有"impawn"按钮：模拟impawn
+            // Staking区所有"Stake"按钮：模拟Stake
             document.querySelectorAll('.nft-stake-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const original = btn.innerHTML;
                     btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> <span>Staking...</span>';
                     btn.disabled = true;
                     setTimeout(() => {
-                        btn.innerHTML = '<i class="fa fa-check"></i> <span>impawnsucceed</span>';
+                        btn.innerHTML = '<i class="fa fa-check"></i> <span>Staked</span>';
                         setTimeout(() => {
                             btn.innerHTML = original;
                             btn.disabled = false;
@@ -1443,7 +1613,7 @@
                 });
             });
 
-            // 代币impawn区"确认impawn"按钮：模拟impawn
+            // 代币Stake区"确认Stake"按钮：模拟Stake
             const tokenStakeBtn = document.getElementById('token-stake-btn');
             if (tokenStakeBtn) {
                 tokenStakeBtn.addEventListener('click', function() {
@@ -1451,7 +1621,7 @@
                     tokenStakeBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> <span>Staking...</span>';
                     tokenStakeBtn.disabled = true;
                     setTimeout(() => {
-                        tokenStakeBtn.innerHTML = '<i class="fa fa-check"></i> <span>impawnsucceed</span>';
+                        tokenStakeBtn.innerHTML = '<i class="fa fa-check"></i> <span>Staked Successfully</span>';
                         setTimeout(() => {
                             tokenStakeBtn.innerHTML = original;
                             tokenStakeBtn.disabled = false;
@@ -1468,7 +1638,7 @@
                     claimRewardBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> <span>Claiming...</span>';
                     claimRewardBtn.disabled = true;
                     setTimeout(() => {
-                        claimRewardBtn.innerHTML = '<i class="fa fa-check"></i> <span>Claimsucceed</span>';
+                        claimRewardBtn.innerHTML = '<i class="fa fa-check"></i> <span>Claimed Successfully</span>';
                         setTimeout(() => {
                             claimRewardBtn.innerHTML = original;
                             claimRewardBtn.disabled = false;
@@ -1477,14 +1647,40 @@
                 });
             }
 
+            // Collect Earnings按钮
+            const collectEarningsBtn = document.getElementById('collect-earnings-btn');
+            if (collectEarningsBtn) {
+                collectEarningsBtn.addEventListener('click', function() {
+                    const original = collectEarningsBtn.innerHTML;
+                    collectEarningsBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> <span>Collecting...</span>';
+                    collectEarningsBtn.disabled = true;
+                    setTimeout(() => {
+                        collectEarningsBtn.innerHTML = '<i class="fa fa-check"></i> <span>Collected Successfully</span>';
+                        setTimeout(() => {
+                            collectEarningsBtn.innerHTML = original;
+                            collectEarningsBtn.disabled = false;
+                        }, 2000);
+                    }, 1500);
+                });
+            }
+
+            // MAX按钮功能
+            const maxStakeBtn = document.getElementById('max-stake-btn');
+            const stakeAmountInput = document.getElementById('stake-amount-input');
+            if (maxStakeBtn && stakeAmountInput) {
+                maxStakeBtn.addEventListener('click', function() {
+                    stakeAmountInput.value = '1245.67';
+                });
+            }
+
             // 社区治理页面的投票按钮：模拟投票
             document.querySelectorAll('.vote-yes-btn, .vote-no-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const original = btn.innerHTML;
-                    btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> <span>投票中...</span>';
+                    btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> <span>Voting...</span>';
                     btn.disabled = true;
                     setTimeout(() => {
-                        btn.innerHTML = '<i class="fa fa-check"></i> <span>投票succeed</span>';
+                        btn.innerHTML = '<i class="fa fa-check"></i> <span>Vote Submitted</span>';
                         setTimeout(() => {
                             btn.innerHTML = original;
                             btn.disabled = false;
@@ -1492,6 +1688,70 @@
                     }, 1500);
                 });
             });
+
+            // Create Proposal按钮
+            const createProposalBtn = document.getElementById('create-proposal-btn');
+            if (createProposalBtn) {
+                createProposalBtn.addEventListener('click', function() {
+                    if (!walletAddress) {
+                        alert('Please connect your wallet first');
+                        connectWalletBtn.scrollIntoView({ behavior: 'smooth' });
+                        return;
+                    }
+                    
+                    const original = createProposalBtn.innerHTML;
+                    createProposalBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> <span>Creating...</span>';
+                    createProposalBtn.disabled = true;
+                    setTimeout(() => {
+                        createProposalBtn.innerHTML = '<i class="fa fa-check"></i> <span>Proposal Created</span>';
+                        alert('Proposal created successfully! It will be available for voting in 24 hours.');
+                        setTimeout(() => {
+                            createProposalBtn.innerHTML = original;
+                            createProposalBtn.disabled = false;
+                        }, 2000);
+                    }, 2500);
+                });
+            }
+
+            // Subscribe按钮
+            const subscribeBtn = document.getElementById('subscribe-btn');
+            if (subscribeBtn) {
+                subscribeBtn.addEventListener('click', function() {
+                    const emailInput = this.previousElementSibling;
+                    if (emailInput.value) {
+                        const original = this.innerHTML;
+                        this.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+                        this.disabled = true;
+                        setTimeout(() => {
+                            this.innerHTML = '<i class="fa fa-check"></i>';
+                            emailInput.value = '';
+                            setTimeout(() => {
+                                this.innerHTML = original;
+                                this.disabled = false;
+                            }, 2000);
+                        }, 1000);
+                    } else {
+                        alert('Please enter your email address');
+                    }
+                });
+            }
+
+            // Save Settings按钮
+            const saveSettingsBtn = document.getElementById('save-settings-btn');
+            if (saveSettingsBtn) {
+                saveSettingsBtn.addEventListener('click', function() {
+                    const original = saveSettingsBtn.innerHTML;
+                    saveSettingsBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> <span>Saving...</span>';
+                    saveSettingsBtn.disabled = true;
+                    setTimeout(() => {
+                        saveSettingsBtn.innerHTML = '<i class="fa fa-check"></i> <span>Settings Saved</span>';
+                        setTimeout(() => {
+                            saveSettingsBtn.innerHTML = original;
+                            saveSettingsBtn.disabled = false;
+                        }, 2000);
+                    }, 1000);
+                });
+            }
         });
     </script>
 </body>
